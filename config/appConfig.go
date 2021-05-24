@@ -13,15 +13,9 @@ import (
 
 // AppConfig represents the application config
 type AppConfig struct {
-	SQLConfig       DataStoreConfig `yaml:"sqlConfig"`
-	CouchdbConfig   DataStoreConfig `yaml:"couchdbConfig"`
-	CacheGrpcConfig DataStoreConfig `yaml:"cacheGrpcConfig"`
-	UserGrpcConfig  DataStoreConfig `yaml:"userGrpcConfig"`
-	ZapConfig       LogConfig       `yaml:"zapConfig"`
-	LorusConfig     LogConfig       `yaml:"logrusConfig"`
-	Log             LogConfig       `yaml:"logConfig"`
-	UseCase         UseCaseConfig   `yaml:"useCaseConfig"`
-	Service         ServiceConfig   `yaml:"useCaseConfig"`
+	SQLConfig DataStoreConfig `yaml:"sqlConfig"`
+	//UseCase   UseCaseConfig   `yaml:"useCaseConfig"`
+	Service ServiceConfig `yaml:"serviceConfig"`
 }
 
 // UseCaseConfig represents different use cases

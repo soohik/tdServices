@@ -18,21 +18,11 @@ func (sc *ServiceContainer) InitApp(filename string) error {
 		return errors.Wrap(err, "loadConfig")
 	}
 	sc.AppConfig = config
-	err = loadLogger(config.Log)
+
 	if err != nil {
 		return errors.Wrap(err, "loadLogger")
 	}
 
-	return nil
-}
-
-// loads the logger
-func loadLogger(lc config.LogConfig) error {
-	// loggerType := lc.Code
-	// err := logFactory.GetLogFactoryBuilder(loggerType).Build(&lc)
-	// if err != nil {
-	// 	return errors.Wrap(err, "")
-	// }
 	return nil
 }
 

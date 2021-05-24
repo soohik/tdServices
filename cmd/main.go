@@ -69,12 +69,12 @@ func runServer(sc *container.ServiceContainer) error {
 	app.Use(gin.Recovery())
 	app.Use(gin.ErrorLogger())
 	addr := httpListenString(sc)
-
+	routes(app)
 	app.Run(addr)
 
 	return nil
 }
 func httpListenString(sc *container.ServiceContainer) string {
-	listen := fmt.Sprintf("%s:%d", "127.0.0.1", sc.AppConfig.Service.Port)
+	listen := fmt.Sprintf(":%d", sc.AppConfig.Service.Port)
 	return listen
 }

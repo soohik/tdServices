@@ -5,11 +5,12 @@ import (
 )
 
 func routes(r *gin.Engine) {
-	v2 := r.Group("/v1")
-	GetHandlersV2(v2)
+
+	v1 := r.Group("/v1")
+	GetHandlersV1(v1)
 }
 
-func GetHandlersV2(r *gin.RouterGroup) {
+func GetHandlersV1(r *gin.RouterGroup) {
 	r.Use(version())
 	public := r.Group("/")
 
@@ -17,6 +18,7 @@ func GetHandlersV2(r *gin.RouterGroup) {
 	 * Point urls
 	 */
 	public.POST("/getall/", createPointHandler)
+	public.GET("/addphone/", createPhoneHandler)
 }
 
 /**
@@ -31,6 +33,14 @@ func version() gin.HandlerFunc {
 }
 
 func createPointHandler(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "test",
+	})
+}
+
+func createPhoneHandler(c *gin.Context) {
+	request := fetchPointsForEventsRequest{}
+
 	c.JSON(200, gin.H{
 		"message": "test",
 	})
