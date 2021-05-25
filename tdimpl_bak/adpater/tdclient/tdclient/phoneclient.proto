@@ -1,0 +1,26 @@
+syntax = "proto3";
+ 
+// user 包
+package tdclient;
+
+// 指定 go 的包路径及包名
+option go_package="/tdclient";
+
+
+// User 服务及服务接口的定义
+service Client {
+    rpc RegPhone(ClientRegRequest) returns (ClientRegResponse) {}
+    
+}
+
+
+// client 服务的各个接口的请求/响应结构
+message ClientRegRequest {
+    string phone = 1;   //手机号码
+    string phonecode = 2;   //验证码
+}
+
+message ClientRegResponse {
+    int32 err = 1;
+    string msg = 2;
+}
