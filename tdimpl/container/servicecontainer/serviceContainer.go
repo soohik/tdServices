@@ -47,7 +47,7 @@ func loadConfig(filename string) (*config.AppConfig, error) {
 }
 
 func (sc *ServiceContainer) BuildUseCase(code string) (interface{}, error) {
-	// return usecasefactory.GetUseCaseFb(code).Build(sc, sc.AppConfig, code)
+	return usecasefactory.GetUseCaseFb(code).Build(sc, sc.AppConfig, code)
 	return nil, nil
 }
 
