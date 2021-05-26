@@ -34,7 +34,41 @@ type PhoneService struct {
 	phone.UnimplementedPhoneServiceServer
 }
 
-func (c *PhoneService) RegPhone(context.Context, *phone.PhoneRegRequest) (*phone.PhoneRegResponse, error) {
+func catchPanic() {
+	if p := recover(); p != nil {
+		logger.Println("%+v\n", p)
+	}
+}
+
+func (c *PhoneService) RegPhone(con context.Context, req *phone.PhoneRegRequest) (*phone.PhoneRegResponse, error) {
+
+	defer catchPanic()
+
+	_, err := getRegistrationUseCase(c.container)
+	if err != nil {
+		logger.Println("%+v\n", err)
+		return nil, errors.Wrap(err, "")
+	}
+	mu, err := phone.GrpcToUser(req.Phone)
+
+	if err != nil {
+		logger.Println("%+v\n", err)
+		return nil, errors.Wrap(err, "")
+	}
+	logger.Println("mu:", mu)
+	// resultUser, err := ruci.UnregisterUser("1")
+	// if err != nil {
+	// 	logger.Println("%+v\n", err)
+	// 	return nil, errors.Wrap(err, "")
+	// }
+	// logger.Println("resultUser:", resultUser)
+	// gu, err := userclient.UserToGrpc(resultUser)
+	// if err != nil {
+	// 	logger.Println("%+v\n", err)
+	// 	return nil, errors.Wrap(err, "")
+	// }
+
+	// logger.Println("user registered: ",)
 
 	a := &phone.PhoneRegResponse{Err: 12345, Msg: "hello"}
 	return a, nil

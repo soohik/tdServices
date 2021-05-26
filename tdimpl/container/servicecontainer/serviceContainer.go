@@ -2,6 +2,7 @@ package servicecontainer
 
 import (
 	"tdimpl/config"
+	"tdimpl/container/usecasefactory"
 
 	"github.com/pkg/errors"
 )
@@ -48,7 +49,7 @@ func loadConfig(filename string) (*config.AppConfig, error) {
 
 func (sc *ServiceContainer) BuildUseCase(code string) (interface{}, error) {
 	return usecasefactory.GetUseCaseFb(code).Build(sc, sc.AppConfig, code)
-	return nil, nil
+
 }
 
 func (sc *ServiceContainer) Get(code string) (interface{}, bool) {

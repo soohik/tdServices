@@ -16,10 +16,13 @@ service PhoneService {
 
 // client 服务的各个接口的请求/响应结构
 message PhoneRegRequest {
+  Phone phone = 1;
+}
+
+message Phone {
     string phone = 1;   //手机号码
     string phonecode = 2;   //验证码
 }
-
 message PhoneRegResponse {
     int32 err = 1;
     string msg = 2;
