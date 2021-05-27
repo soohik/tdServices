@@ -1,10 +1,11 @@
 package registration
 
 import (
+	"strconv"
+
 	"github.com/jfeng45/servicetmpl/dataservice"
 	"github.com/jfeng45/servicetmpl/model"
 	"github.com/pkg/errors"
-	"strconv"
 )
 
 func modifyUser(udi dataservice.UserDataInterface, user *model.User) error {
