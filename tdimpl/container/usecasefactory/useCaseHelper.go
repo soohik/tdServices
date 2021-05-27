@@ -1,13 +1,22 @@
 package usecasefactory
 
-// func buildUserData(c container.Container, dc *config.DataConfig) (dataservice.UserDataInterface, error) {
-// 	dsi, err := dataservicefactory.GetDataServiceFb(dc.Code).Build(c, dc)
-// 	if err != nil {
-// 		return nil, errors.Wrap(err, "")
-// 	}
-// 	udi := dsi.(dataservice.UserDataInterface)
-// 	return udi, nil
-// }
+import (
+	"tdimpl/config"
+	"tdimpl/container"
+	"tdimpl/container/dataservicefactory"
+	"tdimpl/dataservice"
+
+	"github.com/pkg/errors"
+)
+
+func buildUserData(c container.Container, dc *config.DataConfig) (dataservice.UserDataInterface, error) {
+	dsi, err := dataservicefactory.GetDataServiceFb(dc.Code).Build(c, dc)
+	if err != nil {
+		return nil, errors.Wrap(err, "")
+	}
+	udi := dsi.(dataservice.UserDataInterface)
+	return udi, nil
+}
 
 // func buildTxData(c container.Container, dc *config.DataConfig) (dataservice.TxDataInterface, error) {
 // 	dsi, err := dataservicefactory.GetDataServiceFb(dc.Code).Build(c, dc)

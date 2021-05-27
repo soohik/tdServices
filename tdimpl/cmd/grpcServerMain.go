@@ -44,7 +44,7 @@ func (c *PhoneService) RegPhone(con context.Context, req *phone.PhoneRegRequest)
 
 	defer catchPanic()
 
-	_, err := getRegistrationUseCase(c.container)
+	ruci, err := getRegistrationUseCase(c.container)
 	if err != nil {
 		logger.Println("%+v\n", err)
 		return nil, errors.Wrap(err, "")
@@ -56,6 +56,8 @@ func (c *PhoneService) RegPhone(con context.Context, req *phone.PhoneRegRequest)
 		return nil, errors.Wrap(err, "")
 	}
 	logger.Println("mu:", mu)
+	ruci.RegisterPhone(mu)
+
 	// resultUser, err := ruci.UnregisterUser("1")
 	// if err != nil {
 	// 	logger.Println("%+v\n", err)
