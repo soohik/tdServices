@@ -1,7 +1,7 @@
 sqlConfig: &sqlConfig
     code: sqldb
     driverName: mysql
-    urlAddress: "root:@tcp(localhost:4333)/service_config?charset=utf8"
+    urlAddress: "root:123456@tcp(192.168.8.130:3306)/td?charset=utf8"
     dbName:
 couchdbConfig: &couchdbConfig
     code: couch

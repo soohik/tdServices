@@ -17,7 +17,8 @@ import (
 // Concrete builder is in corresponding factory file. For example, "courseDataServiceFactory" is in
 // "courseDataServiceFactory.go"
 var dsFbMap = map[string]dataServiceFbInterface{
-	// config.USER_DATA: &userDataServiceFactoryWrapper{},
+	config.USER_DATA: &userDataServiceFactoryWrapper{},
+	config.TX_DATA:   &txDataServiceFactory{},
 }
 
 // DataServiceInterface serves as a marker to indicate the return type for Build method

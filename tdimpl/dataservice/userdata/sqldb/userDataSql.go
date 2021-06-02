@@ -2,6 +2,7 @@
 package sqldb
 
 import (
+	"tdimpl/dataservice"
 	"tdimpl/model"
 	"tdimpl/tool/gdbc"
 
@@ -42,4 +43,8 @@ func (uds *UserDataSql) Insert(user *model.Phone) (*model.Phone, error) {
 	user.Id = int(id)
 
 	return user, nil
+}
+
+func (uds *UserDataSql) EnableTx(tx dataservice.TxDataInterface) {
+	uds.DB = tx.GetTx()
 }

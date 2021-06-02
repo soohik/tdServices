@@ -36,7 +36,7 @@ type PhoneService struct {
 
 func catchPanic() {
 	if p := recover(); p != nil {
-		logger.Println("%+v\n", p)
+		fmt.Println("%+v\n", p)
 	}
 }
 
@@ -46,31 +46,31 @@ func (c *PhoneService) RegPhone(con context.Context, req *phone.PhoneRegRequest)
 
 	ruci, err := getRegistrationUseCase(c.container)
 	if err != nil {
-		logger.Println("%+v\n", err)
+		fmt.Println("%+v\n", err)
 		return nil, errors.Wrap(err, "")
 	}
 	mu, err := phone.GrpcToUser(req.Phone)
 
 	if err != nil {
-		logger.Println("%+v\n", err)
+		fmt.Println("%+v\n", err)
 		return nil, errors.Wrap(err, "")
 	}
-	logger.Println("mu:", mu)
+	fmt.Println("mu:", mu)
 	ruci.RegisterPhone(mu)
 
 	// resultUser, err := ruci.UnregisterUser("1")
 	// if err != nil {
-	// 	logger.Println("%+v\n", err)
+	// 	fmt.Println("%+v\n", err)
 	// 	return nil, errors.Wrap(err, "")
 	// }
-	// logger.Println("resultUser:", resultUser)
+	// fmt.Println("resultUser:", resultUser)
 	// gu, err := userclient.UserToGrpc(resultUser)
 	// if err != nil {
-	// 	logger.Println("%+v\n", err)
+	// 	fmt.Println("%+v\n", err)
 	// 	return nil, errors.Wrap(err, "")
 	// }
 
-	// logger.Println("user registered: ",)
+	// fmt.Println("user registered: ",)
 
 	a := &phone.PhoneRegResponse{Err: 12345, Msg: "hello"}
 	return a, nil
@@ -88,7 +88,7 @@ func getRegistrationUseCase(c container.Container) (usecase.RegistrationUseCaseI
 }
 
 func runServer(sc *servicecontainer.ServiceContainer) error {
-	logger.Println("start runserver")
+	fmt.Println("start runserver")
 
 	srv := grpc.NewServer()
 
@@ -97,12 +97,12 @@ func runServer(sc *servicecontainer.ServiceContainer) error {
 	phone.RegisterPhoneServiceServer(srv, cs)
 
 	ugc := sc.AppConfig.UserGrpcConfig
-	logger.Println("userGrpcConfig: %+v\n", ugc.UrlAddress)
+	fmt.Println("userGrpcConfig: %+v\n", ugc.UrlAddress)
 	l, err := net.Listen(ugc.DriverName, ugc.UrlAddress)
 	if err != nil {
 		return errors.Wrap(err, "")
 	} else {
-		logger.Println("server listening")
+		fmt.Println("server listening")
 	}
 	return srv.Serve(l)
 }
@@ -139,9 +139,9 @@ func main() {
 		panic(err)
 	}
 	if err := runServer(container); err != nil {
-		logger.Println("Failed to run user server: %+v\n", err)
+		fmt.Println("Failed to run user server: %+v\n", err)
 		panic(err)
 	} else {
-		logger.Println("server started")
+		fmt.Println("server started")
 	}
 }

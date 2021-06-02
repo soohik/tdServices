@@ -1,0 +1,246 @@
+1.622213177349046e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622213177349112e+09	info	zap/zap.go:50	
+	1.6222131773514395e+09	debug	ginserver/grpcServerMain.go:30	start runserver
+	1.6222131773515923e+09	debug	ginserver/grpcServerMain.go:36	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622219322366184e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222193223662925e+09	info	zap/zap.go:50	
+	1.6222193223684592e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.622219378479436e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222193784795077e+09	info	zap/zap.go:50	
+	1.6222193784813027e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222194501365845e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222194501366832e+09	info	zap/zap.go:50	
+	1.6222194501385663e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222195588992598e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222195588993585e+09	info	zap/zap.go:50	
+	1.6222195589007885e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222196132435277e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222196132435892e+09	info	zap/zap.go:50	
+	1.622219613245664e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222196365208788e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6222196365209472e+09	info	zap/zap.go:50	
+	1.6222196365223126e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222197185153556e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622219718515519e+09	info	zap/zap.go:50	
+	1.622219718530965e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6222197219660034e+09	debug	ginserver/grpcServerMain.go:42	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6223070216417835e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622307021642198e+09	info	zap/zap.go:50	
+	1.622307021644256e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6223070244491186e+09	debug	ginserver/grpcServerMain.go:42	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6223084836224577e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622308483622525e+09	info	zap/zap.go:50	
+	1.6223084836243982e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6223084836245468e+09	debug	ginserver/grpcServerMain.go:42	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622308815638291e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6223088156383548e+09	info	zap/zap.go:50	
+	1.6223088156399724e+09	debug	ginserver/grpcServerMain.go:32	start runserver
+	1.6223088156402075e+09	debug	ginserver/grpcServerMain.go:42	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622459052392237e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224590530902874e+09	info	zap/zap.go:50	
+	1.622459053100471e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224590531006248e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224590723478e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224590723478916e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224590723479042e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224590799696488e+09	fatal	ginserver/grpcServerMain.go:97	registration interface build failed:%+v
+: : : : : : dial tcp [::1]:4333: connect: connection refused
+main.testRegisterUser
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:97
+main.runServer
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:48
+main.main
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:63
+runtime.main
+	/usr/lib/golang/src/runtime/proc.go:203
+	1.6224591342110755e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622459134211128e+09	info	zap/zap.go:50	
+	1.6224591342218988e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224591342221045e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622459153395481e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224591629795318e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224591664483612e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224591855863254e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224591855863845e+09	info	zap/zap.go:50	
+	1.6224591855960908e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224591855962784e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224594413638263e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224594413639708e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.622459446172749e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622459458135046e+09	fatal	ginserver/grpcServerMain.go:97	registration interface build failed:%+v
+: : : : : : dial tcp 192.168.8.130:1433: connect: connection refused
+main.testRegisterUser
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:97
+main.runServer
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:48
+main.main
+	/home/game/tdServices/tdapi/cmd/ginserver/grpcServerMain.go:63
+runtime.main
+	/usr/lib/golang/src/runtime/proc.go:203
+	1.622459559699944e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622459559700003e+09	info	zap/zap.go:50	
+	1.6224595597102e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224595597103913e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224595664748693e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224595664749732e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224595678825717e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224595759572427e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.6224595833252828e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224595833254058e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224595833254251e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.622459583325447e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.622460491095222e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622460491095275e+09	info	zap/zap.go:50	
+	1.6224604911062906e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224604911064725e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224605492429183e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224605492429814e+09	info	zap/zap.go:50	
+	1.6224605492530198e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224605492531934e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224606523032868e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224606523033485e+09	info	zap/zap.go:50	
+	1.6224606523135285e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224606523136866e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224607209792156e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224607209793713e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224607226277092e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224607290677304e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6540}
+	1.6224607487705777e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224607487706678e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224607487706869e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224607487707098e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6540}
+	1.6224607731131752e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622460773113238e+09	info	zap/zap.go:50	
+	1.6224607731229758e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224607731231585e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224607755117915e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224607755119345e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224607759154634e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224607826586244e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6540}
+	1.6224607887713945e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224607887714822e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224607887714984e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224607887715201e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6540}
+	1.622460881614984e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224608816150477e+09	info	zap/zap.go:50	
+	1.6224608816243632e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.622460881624501e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224608895820267e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224608895821447e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.622460889582171e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622460894108953e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6540}
+	1.6224608941090746e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224608941091032e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224608941091294e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224608941091585e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6540}
+	1.6224609183683367e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224609183683958e+09	info	zap/zap.go:50	
+	1.6224609183786874e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224609183788686e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622461040402537e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622461040402596e+09	info	zap/zap.go:50	
+	1.6224610404117174e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224610404118972e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622461091564693e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.622461091564826e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224610915648425e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224610961275277e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.622461105424669e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224611054247816e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224611054248261e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224611054248683e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224611325768335e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.622461132576916e+09	info	zap/zap.go:50	
+	1.6224611325789542e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224611325791733e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224611376230524e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224611376231506e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224611376231673e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622461142318669e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.622461142318766e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224611423187811e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224611423188162e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224611423188505e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224611589414217e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224611589414797e+09	info	zap/zap.go:50	
+	1.6224611589516103e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224611589517543e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224611790110793e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224611790111997e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224611790112238e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224611836388206e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.6224611916885202e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224611916886427e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224611916886837e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224611916887212e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224618444041805e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224618444042394e+09	info	zap/zap.go:50	
+	1.6224618444062967e+09	debug	ginserver/grpcServerMain.go:36	start runserver
+	1.6224618444064698e+09	debug	ginserver/grpcServerMain.go:46	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224618516024103e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224618516025121e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224618516025307e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224618561642327e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.6224618581483412e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224618581484687e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622461858148501e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.622461858148539e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224619603483994e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224619603484616e+09	info	zap/zap.go:50	
+	1.6224619603590343e+09	debug	ginserver/grpcServerMain.go:33	start runserver
+	1.622461960359197e+09	debug	ginserver/grpcServerMain.go:43	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.622461977650101e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224619776502182e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224619776502419e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622461982195085e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.622461983219861e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224619832200315e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224619832200918e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224619832201407e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224700504141562e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224700504144819e+09	info	zap/zap.go:50	
+	1.6224700504164176e+09	debug	ginserver/grpcServerMain.go:33	start runserver
+	1.622470050416606e+09	debug	ginserver/grpcServerMain.go:43	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224700519470308e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224700519471238e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224700519471412e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224700566753123e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.6224700566754344e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224700566754575e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.622470056675472e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.622470056675489e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	1.6224700746005461e+09	debug	zap/zap.go:99	logger construction succeeded
+	1.6224700746006155e+09	info	zap/zap.go:50	
+	1.6224700746108687e+09	debug	ginserver/grpcServerMain.go:33	start runserver
+	1.6224700746110508e+09	debug	ginserver/grpcServerMain.go:43	userGrpcConfig: {Code:userGrpc DriverName:tcp UrlAddress:localhost:5052 DbName:}
+
+	1.6224700805714214e+09	debug	dataservicefactory/userDataServiceFactoryWrapper.go:16	UserDataServiceFactory
+	1.6224700805717247e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:19	sqlUserDataServiceFactory
+	1.6224700805717514e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224700851454592e+09	debug	userdataservicefactory/sqlUserDataServiceFactory.go:27	uds:&{0xc0000e6600}
+	1.622470085145588e+09	debug	dataservicefactory/txDataServiceFactory.go:18	txDataServiceFactory
+	1.6224700851456137e+09	debug	datastorefactory/sqlFactory.go:18	sqlFactory
+	1.6224700851456356e+09	debug	datastorefactory/sqlFactory.go:25	found db in container for key:sqldb
+	1.6224700851456606e+09	debug	dataservicefactory/txDataServiceFactory.go:26	udm:&{0xc0000e6600}
+	
