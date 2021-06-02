@@ -19,12 +19,7 @@ func JsonToPhone(c *gin.Context) (*model.Phone, error) {
 		// 返回错误信息
 		// gin.H 封装了生成json数据的工具
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return nil, nil
+		return nil, err
 	}
-
-	if c == nil {
-		return nil, nil
-	}
-
 	return &jsonData, nil
 }
