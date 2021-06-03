@@ -1,5 +1,6 @@
 # github.com/Arman92/go-tdlib v0.0.0-20210325183359-3ea9cda96f39
 ## explicit
+github.com/Arman92/go-tdlib
 # github.com/gin-contrib/sse v0.1.0
 github.com/gin-contrib/sse
 # github.com/gin-gonic/gin v1.7.2

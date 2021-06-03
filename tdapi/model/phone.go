@@ -13,6 +13,7 @@ type Phone struct {
 	Account    string `json:"account"`
 	Tddata     string `json:"tddata"`
 	Tdfile     string `json:"tdfile"`
+	Registered int    `json:"registered"`
 	Createtime string `json:"create_time" gorm:"column:create_time"`
 	Updatetime string `json:"update_time" gorm:"column:update_time"`
 }

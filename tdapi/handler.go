@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"tdapi/adapter/phoneclient"
 
 	"github.com/gin-gonic/gin"
@@ -13,11 +12,14 @@ func register(c *gin.Context) {
 }
 
 func preregister(c *gin.Context) {
-	phone, err := phoneclient.JsonToPhone(c)
-	if err != nil {
-		return
-	}
+	// phone, err := phoneclient.JsonToPhone(c)
+	// if err != nil {
+	// 	return
+	// }
 
-	fmt.Println(phone)
+	//查找数据库
+	// find := Preregister(phone.Phone)
+
+	// fmt.Println(find, err)
 
 }

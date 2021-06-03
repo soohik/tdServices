@@ -3,7 +3,7 @@ module tdapi
 go 1.14
 
 require (
-	github.com/Arman92/go-tdlib v0.0.0-20210325183359-3ea9cda96f39 // indirect
+	github.com/Arman92/go-tdlib v0.0.0-20210325183359-3ea9cda96f39
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-kivik/couchdb v2.0.0+incompatible // indirect
 	github.com/go-kivik/kivik v2.0.0+incompatible // indirect

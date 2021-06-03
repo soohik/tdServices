@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"tdapi/clientmanager"
 	"tdapi/config"
+	"tdapi/dataservice"
 
 	"time"
 
@@ -17,7 +19,7 @@ var router *gin.Engine
 var log *logrus.Logger
 
 const (
-	DEV_CONFIG  string = "../../config/appConfigDev.yaml"
+	DEV_CONFIG  string = "./config/appConfigDev.yaml"
 	PROD_CONFIG string = "../../config/appConfigProd.yaml"
 )
 
@@ -31,7 +33,7 @@ func Logger() *logrus.Logger {
 	now := time.Now()
 	logFilePath := ""
 	if dir, err := os.Getwd(); err == nil {
-		logFilePath = dir + "./logs/"
+		logFilePath = dir + "/logs/"
 	}
 	if err := os.MkdirAll(logFilePath, 0777); err != nil {
 		fmt.Println(err.Error())
@@ -117,6 +119,7 @@ func runServer() error {
 	//l, err:=net.Listen(GRPC_NETWORK, GRPC_ADDRESS)
 
 	// LoadTdList(sc)
+	log.Info("run server!")
 
 	return router.Run()
 
@@ -125,10 +128,9 @@ func runServer() error {
 func main() {
 	filename := DEV_CONFIG
 
-	log.Info("run server！")
-
 	config.LoadConfigs(filename)
-	SqlBuild()
+	dataservice.SqlBuild()
+	clientmanager.BuildClientManager()
 
 	if err := runServer(); err != nil {
 
