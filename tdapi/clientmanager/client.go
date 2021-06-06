@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	TdlibDbDirectory    = "../../tddata/"
-	TdlibFilesDirectory = "../../tdfile/"
+	TdlibDbDirectory    = "./tddata/"
+	TdlibFilesDirectory = "./tdfile/"
 )
 
 // RegistrationUseCase implements RegistrationUseCaseInterface.
@@ -16,13 +16,19 @@ const (
 // TxDataInterface is needed to support transaction
 type TDClient struct {
 	AcountName          string
+	Code                chan string
+	Registered          int //0 未验证， 1 验证通过
+	Runed               bool
+	Status              int
 	TdlibDbDirectory    string
 	TdlibFilesDirectory string
-	tdlibClient         *tdlib.Client
+
+	tdlibClient *tdlib.Client
+	Manager     *ClientManagerUseCase
 }
 
 func (td TDClient) AddInstance() {
-	//tdlib.SetLogVerbosityLevel(1)
+	tdlib.SetLogVerbosityLevel(1)
 	// Create new instance of client
 	client := tdlib.NewClient(tdlib.Config{
 		APIID:               "228834",
@@ -40,7 +46,10 @@ func (td TDClient) AddInstance() {
 		IgnoreFileNames:     false,
 	})
 
+	td.Runed = true
+
 	td.tdlibClient = client
+	td.Code = make(chan string)
 
 	// Main loop
 	go func() {
@@ -49,23 +58,44 @@ func (td TDClient) AddInstance() {
 		for update := range rawUpdates {
 			// Show all updates
 			_ = update
+			if !td.Runed {
+				client.Close()
+				break
+			}
 			// fmt.Println(update.Data)
 			// fmt.Print("\n\n")
 		}
 	}()
+
+	// currentState, _ := client.Authorize()
+	// for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+	// 	time.Sleep(300 * time.Millisecond)
+	// }
 
 	for {
 		currentState, err := client.Authorize()
 		if err != nil {
 			fmt.Printf("Error getting current state: %v", err)
 			continue
-
 		}
-		if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateReadyType {
+		fmt.Println(currentState)
+		if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitPhoneNumberType {
+
+			_, err := client.SendPhoneNumber(td.AcountName)
+			if err != nil {
+				go td.Manager.RemoveClient(td.AcountName)
+			}
+
+		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitCodeType {
+			data := <-td.Code //接收
+			_, err := client.SendAuthCode(data)
+			if err != nil {
+				fmt.Printf("Error sending auth code : %v", err)
+			}
+		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateReadyType {
 			fmt.Println("Authorization Ready! Let's rock")
 			break
 		}
-		fmt.Println(currentState)
 	}
 
 }

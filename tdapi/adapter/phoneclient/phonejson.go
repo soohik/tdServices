@@ -10,10 +10,10 @@ import (
 )
 
 // GrpcToUser converts from grpc User type to domain Model user type
-func JsonToPhone(c *gin.Context) (*model.Phone, error) {
+func JsonToPhone(c *gin.Context) (*model.RegPhone, error) {
 
 	//声明接收的数据结构
-	var jsonData model.Phone
+	var jsonData model.RegPhone
 	// 将request的body中数据，自动按照json格式解析到结构体
 	if err := c.ShouldBindJSON(&jsonData); err != nil {
 		var msg model.Message

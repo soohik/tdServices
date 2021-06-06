@@ -1,7 +1,6 @@
 package dataservice
 
 import (
-	"fmt"
 	"tdapi/config"
 	"tdapi/model"
 
@@ -38,17 +37,17 @@ func SqlBuild() error {
 
 }
 
-func Preregister(phonenumber string) bool {
+func Preregister(p model.Phone) bool {
 	// db := sqlHelp.sqldb
-	phone, find := sqlHelp.GetPhone(phonenumber)
+	phone, find := sqlHelp.GetPhone(p.Phone)
 
-	if find == true {
+	if find == true && phone.Registered == 1 {
 
 		return true
 	}
-	fmt.Println(phone)
 
-	return true
+	return InsertClient(p)
+
 }
 
 func (db *sqlFactory) GetPhone(phonenumber string) (model.Phone, bool) {
@@ -78,4 +77,16 @@ func GetAllPhone() ([]model.Phone, error) {
 		phones = append(phones, phone)
 	}
 	return phones, nil
+}
+
+func InsertClient(p model.Phone) bool {
+
+	result := sqlHelp.sqldb.Create(&p)
+
+	if result.Error != nil {
+
+		return false
+	}
+
+	return true
 }
