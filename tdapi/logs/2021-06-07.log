@@ -1,0 +1,4 @@
+time="2021-06-07 10:51:44" level=info msg="run server!"
+time="2021-06-07 11:10:28" level=info msg="run server!"
+time="2021-06-07 11:13:28" level=info msg="run server!"
+time="2021-06-07 11:18:49" level=info msg="| 200 | 48.543399637s |   192.168.8.158 | POST | /phone/preregister |"

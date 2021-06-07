@@ -39,10 +39,9 @@ func SqlBuild() error {
 
 func Preregister(p model.Phone) bool {
 	// db := sqlHelp.sqldb
-	phone, find := sqlHelp.GetPhone(p.Phone)
+	_, find := sqlHelp.GetPhone(p.Phone)
 
-	if find == true && phone.Registered == 1 {
-
+	if find {
 		return true
 	}
 

@@ -2,8 +2,20 @@
 package clientmanager
 
 import (
+	"fmt"
 	"tdapi/dataservice"
 	"tdapi/model"
+
+	"github.com/Arman92/go-tdlib"
+)
+
+const (
+	SOK             = 200
+	AuthWaitCode    = 201
+	AuthSendTimeout = -1
+	AuthSenCodeErr  = -2
+	AuthorizationStateClosed
+	RegisterFailed = 409
 )
 
 const (
@@ -72,12 +84,16 @@ func (c *ClientManagerUseCase) GetClient(phone string) *TdInstance {
 
 func RegisterPhone(phonenumber, logincode string) bool {
 
-	ClientManager.GetClient(phonenumber)
+	m := ClientManager.GetClient(phonenumber)
+	if m != nil {
+		m.Client.Code <- logincode
+	}
+
 	return true
 
 }
 
-func PreRegisterPhone(phonenumber string) bool {
+func PreRegisterPhone(phonenumber string) (bool, int) {
 
 	var phone model.Phone
 	phone.Account = phonenumber
@@ -87,11 +103,13 @@ func PreRegisterPhone(phonenumber string) bool {
 
 	phone.Tdfile = tdfile + phonenumber + "-tdlib-files"
 
-	find := dataservice.Preregister(phone)
-	if find { //插入成功
-		ClientManager.AddClient(phone)
+	ok := dataservice.Preregister(phone)
+	if ok {
+		ClientManager.AddInstance(phonenumber, "")
+
 	}
-	return true
+
+	return false, SOK
 
 }
 
@@ -146,6 +164,56 @@ func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
 }
 
 func BuildClientManager() {
-	ClientManager.LoadTdInstance()
+	// ClientManager.LoadTdInstance()
 
+}
+
+func (c *ClientManagerUseCase) AddInstance(account, code string) int {
+	tdlib.SetLogVerbosityLevel(1)
+	// Create new instance of client
+	client := tdlib.NewClient(tdlib.Config{
+		APIID:               "228834",
+		APIHash:             "e4d4a67594f3ddadacab55ab48a6187a",
+		SystemLanguageCode:  "en",
+		DeviceModel:         "Server",
+		SystemVersion:       "1.0.0",
+		ApplicationVersion:  "1.0.0",
+		UseMessageDatabase:  true,
+		UseFileDatabase:     true,
+		UseChatInfoDatabase: true,
+		UseTestDataCenter:   false,
+		DatabaseDirectory:   tddata,
+		FileDirectory:       tddata,
+		IgnoreFileNames:     false,
+	})
+
+	for {
+		currentState, err := client.Authorize()
+		if err != nil {
+			fmt.Printf("Error getting current state: %v", err)
+			continue
+		}
+		fmt.Println(currentState)
+		if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitPhoneNumberType {
+
+			_, err := client.SendPhoneNumber(account)
+			if err != nil {
+				return AuthSendTimeout
+			}
+			return AuthWaitCode
+
+		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitCodeType {
+
+			_, err := client.SendAuthCode(code)
+			if err != nil {
+				fmt.Printf("Error sending auth code : %v", err)
+			}
+
+		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateReadyType {
+			fmt.Println("Authorization Ready! Let's rock")
+			return AuthWaitCode
+
+		}
+	}
+	return 0
 }

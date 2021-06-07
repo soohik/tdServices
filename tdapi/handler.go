@@ -27,8 +27,9 @@ func preregister(c *gin.Context) {
 	}
 
 	//查找数据库
-	find := clientmanager.PreRegisterPhone(phone.Phone)
 
-	fmt.Println(find, err)
+	find, regerr := clientmanager.PreRegisterPhone(phone.Phone)
+
+	fmt.Println(find, regerr)
 
 }
