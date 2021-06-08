@@ -8,6 +8,7 @@ func initializeRoutes() {
 	// indicating whether the request was from an authenticated user or not
 	router.Use(setUserStatus())
 
+	// JoinChatByInviteLink
 	// Group user related routes together
 	userRoutes := router.Group("/phone")
 	{
@@ -15,7 +16,7 @@ func initializeRoutes() {
 		// Ensure that the user is not logged in by using the middleware
 		userRoutes.POST("/register", ensureNotLoggedIn(), register)
 		userRoutes.POST("/preregister", ensureNotLoggedIn(), preregister)
-		userRoutes.GET("/preregister", ensureNotLoggedIn(), preregister)
+		userRoutes.POST("/joinlinkurl", ensureNotLoggedIn(), JoinChatByInviteLink)
 	}
 
 }

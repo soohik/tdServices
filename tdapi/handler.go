@@ -54,3 +54,19 @@ func preregister(c *gin.Context) {
 	c.JSON(http.StatusOK, msg)
 
 }
+
+func JoinChatByInviteLink(c *gin.Context) {
+	phone, err := phoneclient.JsonToLink(c)
+	if err != nil {
+		return
+	}
+	ret := clientmanager.Joinlink(phone.Phone, phone.Url)
+
+	var msg model.Message
+	if ret == model.SOK {
+		msg.Code = model.SOK
+
+	}
+
+	c.JSON(http.StatusOK, msg)
+}

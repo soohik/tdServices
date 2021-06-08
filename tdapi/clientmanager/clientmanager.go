@@ -6,6 +6,7 @@ import (
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
+	"time"
 
 	"github.com/Arman92/go-tdlib"
 )
@@ -156,6 +157,55 @@ func BuildClientManager() {
 
 }
 
+func Joinlink(account, linkurl string) int {
+
+	tdlib.SetLogVerbosityLevel(1)
+	// Create new instance of client
+	client := tdlib.NewClient(tdlib.Config{
+		APIID:               "228834",
+		APIHash:             "e4d4a67594f3ddadacab55ab48a6187a",
+		SystemLanguageCode:  "en",
+		DeviceModel:         "Server",
+		SystemVersion:       "1.0.0",
+		ApplicationVersion:  "1.0.0",
+		UseMessageDatabase:  true,
+		UseFileDatabase:     true,
+		UseChatInfoDatabase: true,
+		UseTestDataCenter:   false,
+		DatabaseDirectory:   tddata + account + "-tdlib-db",
+		FileDirectory:       tdfile + account + "-tdlib-files",
+		IgnoreFileNames:     false,
+	})
+	defer client.Close() //关闭
+
+	currentState, _ := client.Authorize()
+	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+		time.Sleep(300 * time.Millisecond)
+	}
+
+	char, err := client.SearchPublicChat("officialelectroneum")
+
+	fmt.Println(char, err)
+
+	info, err := client.CheckChatInviteLink(linkurl)
+	fmt.Println(info, err)
+	client.JoinChatByInviteLink(linkurl)
+	if err != nil {
+		return model.AuthSenCodeErr
+	}
+
+	// if ret == model.SOK {
+	// 	info, err := client.CheckChatInviteLink(linkurl)
+	// 	fmt.Println(info, err)
+
+	// 	ok, a := client.JoinChat(info.ChatID)
+	// 	fmt.Println(ok, a)
+
+	// }
+
+	return model.SOK
+}
+
 func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, int) {
 	var ret int
 	var repclient model.Client
@@ -173,16 +223,17 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 		UseFileDatabase:     true,
 		UseChatInfoDatabase: true,
 		UseTestDataCenter:   false,
-		DatabaseDirectory:   tddata,
-		FileDirectory:       tddata,
+		DatabaseDirectory:   tddata + account + "-tdlib-db",
+		FileDirectory:       tdfile + account + "-tdlib-files",
 		IgnoreFileNames:     false,
 	})
+	defer client.Close() //关闭
 
 	for {
 		currentState, err := client.Authorize()
 		if err != nil {
-			fmt.Printf("Error getting current state: %v", err)
-			continue
+			log.Infof("Error getting current state: %s %v", account, err)
+			break
 		}
 		fmt.Println(currentState)
 		if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitPhoneNumberType {
@@ -212,12 +263,11 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 			repclient.Name = user.FirstName
 			repclient.Username = user.Username
 			repclient.PhoneNumber = user.PhoneNumber
-
 			ret = model.SOK
 			break
 
 		}
 	}
-	client.Close() //关闭
+
 	return repclient, ret
 }

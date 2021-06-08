@@ -8,6 +8,7 @@ const (
 	AuthorizationStateClosed
 	RegisterFailed = 409
 	PhoneNOTFOUND  = 404
+	JoinLinkUrlErr = 410
 )
 
 type Message struct {
