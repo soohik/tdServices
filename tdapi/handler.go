@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"net/http"
 	"tdapi/adapter/phoneclient"
 	"tdapi/clientmanager"
+	"tdapi/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,9 +17,20 @@ func register(c *gin.Context) {
 	}
 
 	//查找数据库
-	find := clientmanager.RegisterPhone(phone.Phone, phone.Code)
+	find, client := clientmanager.RegisterPhone(phone.Phone, phone.Code)
 
-	fmt.Println(find, err)
+	var msg model.Message
+	if find {
+		b, _ := json.Marshal(&client)
+		_ = json.Unmarshal(b, &msg.Data)
+
+		msg.Code = model.SOK
+
+	} else {
+		msg.Code = model.RegisterFailed
+	}
+
+	c.JSON(http.StatusOK, msg)
 }
 
 func preregister(c *gin.Context) {
@@ -30,6 +43,14 @@ func preregister(c *gin.Context) {
 
 	find, regerr := clientmanager.PreRegisterPhone(phone.Phone)
 
-	fmt.Println(find, regerr)
+	var msg model.Message
+	if find {
+		msg.Code = model.SOK
+
+	} else {
+		msg.Code = regerr
+	}
+
+	c.JSON(http.StatusOK, msg)
 
 }

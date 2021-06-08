@@ -39,7 +39,7 @@ func SqlBuild() error {
 
 func Preregister(p model.Phone) bool {
 	// db := sqlHelp.sqldb
-	_, find := sqlHelp.GetPhone(p.Phone)
+	_, find := GetPhone(p.Phone)
 
 	if find {
 		return true
@@ -49,15 +49,14 @@ func Preregister(p model.Phone) bool {
 
 }
 
-func (db *sqlFactory) GetPhone(phonenumber string) (model.Phone, bool) {
+func GetPhone(phonenumber string) (model.Phone, bool) {
 	var phone model.Phone
-	result := db.sqldb.Where("phone = ?", phonenumber).First(&phone)
+	result := sqlHelp.sqldb.Where("phone = ?", phonenumber).First(&phone)
 	if result.RowsAffected <= 0 {
 		return phone, false
 	}
 
 	return phone, true
-
 }
 
 func GetAllPhone() ([]model.Phone, error) {

@@ -4,18 +4,10 @@ package clientmanager
 import (
 	"fmt"
 	"tdapi/dataservice"
+	"tdapi/log"
 	"tdapi/model"
 
 	"github.com/Arman92/go-tdlib"
-)
-
-const (
-	SOK             = 200
-	AuthWaitCode    = 201
-	AuthSendTimeout = -1
-	AuthSenCodeErr  = -2
-	AuthorizationStateClosed
-	RegisterFailed = 409
 )
 
 const (
@@ -69,27 +61,23 @@ func (c *ClientManagerUseCase) RemoveClient(phone string) bool {
 }
 
 //
-func (c *ClientManagerUseCase) GetClient(phone string) *TdInstance {
+func (c *ClientManagerUseCase) GetClient(phone string) (model.Phone, bool) {
 
-	for index := range c.TdInstances {
-		if c.TdInstances[index].Phone == phone {
-
-			return &c.TdInstances[index]
-		}
-	}
-
-	return nil
+	return dataservice.GetPhone(phone)
 
 }
 
-func RegisterPhone(phonenumber, logincode string) bool {
+func RegisterPhone(phonenumber, logincode string) (bool, model.Client) {
 
-	m := ClientManager.GetClient(phonenumber)
-	if m != nil {
-		m.Client.Code <- logincode
+	_, find := ClientManager.GetClient(phonenumber)
+	if !find {
+		return false, model.Client{}
 	}
-
-	return true
+	client, ret := ClientManager.AddInstance(phonenumber, logincode)
+	if ret == model.SOK {
+		return true, client
+	}
+	return false, model.Client{}
 
 }
 
@@ -109,7 +97,7 @@ func PreRegisterPhone(phonenumber string) (bool, int) {
 
 	}
 
-	return false, SOK
+	return false, model.SOK
 
 }
 
@@ -168,7 +156,10 @@ func BuildClientManager() {
 
 }
 
-func (c *ClientManagerUseCase) AddInstance(account, code string) int {
+func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, int) {
+	var ret int
+	var repclient model.Client
+
 	tdlib.SetLogVerbosityLevel(1)
 	// Create new instance of client
 	client := tdlib.NewClient(tdlib.Config{
@@ -198,22 +189,35 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) int {
 
 			_, err := client.SendPhoneNumber(account)
 			if err != nil {
-				return AuthSendTimeout
+				log.Infof("phone %s  err: %v", account, err)
+				ret = model.AuthSendTimeout
+				break
 			}
-			return AuthWaitCode
+			ret = model.AuthWaitCode
 
 		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitCodeType {
-
-			_, err := client.SendAuthCode(code)
-			if err != nil {
-				fmt.Printf("Error sending auth code : %v", err)
+			if code != "" {
+				_, err := client.SendAuthCode(code)
+				if err != nil {
+					fmt.Printf("Error sending auth code : %v", err)
+				}
+			} else {
+				return repclient, model.AuthWaitCode
 			}
 
 		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateReadyType {
-			fmt.Println("Authorization Ready! Let's rock")
-			return AuthWaitCode
+			log.Info("Authorization Ready! Let's rock", account)
+			user, _ := client.GetMe()
+			repclient.Id = user.ID
+			repclient.Name = user.FirstName
+			repclient.Username = user.Username
+			repclient.PhoneNumber = user.PhoneNumber
+
+			ret = model.SOK
+			break
 
 		}
 	}
-	return 0
+	client.Close() //关闭
+	return repclient, ret
 }
