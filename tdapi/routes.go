@@ -17,6 +17,9 @@ func initializeRoutes() {
 		userRoutes.POST("/register", ensureNotLoggedIn(), register)
 		userRoutes.POST("/preregister", ensureNotLoggedIn(), preregister)
 		userRoutes.POST("/joinlinkurl", ensureNotLoggedIn(), JoinChatByInviteLink)
+		userRoutes.POST("/getallgroups", ensureNotLoggedIn(), Getallgroups)
+		userRoutes.POST("/getmegroups", ensureNotLoggedIn(), Getmegroups)
+
 	}
 
 }

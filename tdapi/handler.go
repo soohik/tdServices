@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"tdapi/adapter/phoneclient"
@@ -82,6 +83,54 @@ func JoinChatByInviteLink(c *gin.Context) {
 		msg.Code = model.SOK
 
 	}
+	c.JSON(http.StatusOK, msg)
+
+}
+
+func Getallgroups(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToAgent(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	groups, err := clientmanager.Getallgroups(agent.Name)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	b, _ := json.Marshal(&groups)
+	_ = json.Unmarshal(b, &msg.Data)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+func Getmegroups(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToMe(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	groups, err := clientmanager.GetMegroups(agent.Name)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	b, _ := json.Marshal(&groups)
+	_ = json.Unmarshal(b, &msg.Data)
+
 	c.JSON(http.StatusOK, msg)
 
 }
