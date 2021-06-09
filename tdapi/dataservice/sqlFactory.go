@@ -88,3 +88,35 @@ func InsertClient(p model.Phone) bool {
 
 	return true
 }
+
+func InsertGroup(groupname, linkurl string) bool {
+
+	var group model.Groups
+	result := sqlHelp.sqldb.Where("name = ? and linkurl = ?", groupname, linkurl).First(&group)
+
+	if result.RowsAffected > 0 {
+		return true
+	}
+	group.Name = groupname
+	group.Linkurl = linkurl
+	sqlHelp.sqldb.Create(&group)
+
+	return true
+
+}
+
+func InsertGroupsInfo(phone, groupname string) bool {
+
+	var group model.Groupinfos
+	result := sqlHelp.sqldb.Where("phone = ? and groupname = ?", phone, groupname).First(&group)
+
+	if result.RowsAffected > 0 {
+		return true
+	}
+	group.Phone = phone
+	group.Groupname = groupname
+
+	sqlHelp.sqldb.Create(&group)
+	return true
+
+}

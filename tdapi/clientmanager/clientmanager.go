@@ -2,6 +2,7 @@
 package clientmanager
 
 import (
+	"errors"
 	"fmt"
 	"tdapi/dataservice"
 	"tdapi/log"
@@ -157,7 +158,10 @@ func BuildClientManager() {
 
 }
 
-func Joinlink(account, linkurl string) int {
+func Joinlink(account, linkurl, groupname string) (int, error) {
+
+	dataservice.InsertGroup(groupname, linkurl)
+	dataservice.InsertGroupsInfo(account, groupname)
 
 	tdlib.SetLogVerbosityLevel(1)
 	// Create new instance of client
@@ -183,27 +187,18 @@ func Joinlink(account, linkurl string) int {
 		time.Sleep(300 * time.Millisecond)
 	}
 
-	char, err := client.SearchPublicChat("officialelectroneum")
-
-	fmt.Println(char, err)
-
-	info, err := client.CheckChatInviteLink(linkurl)
-	fmt.Println(info, err)
-	client.JoinChatByInviteLink(linkurl)
+	char, err := client.SearchPublicChat(groupname)
 	if err != nil {
-		return model.AuthSenCodeErr
+		return model.BadRequest, errors.New("无效的组")
+	}
+	ok, _ := client.JoinChat(char.ID)
+	fmt.Println(ok, err)
+
+	if err != nil {
+		return model.AuthSenCodeErr, errors.New("加入失败")
 	}
 
-	// if ret == model.SOK {
-	// 	info, err := client.CheckChatInviteLink(linkurl)
-	// 	fmt.Println(info, err)
-
-	// 	ok, a := client.JoinChat(info.ChatID)
-	// 	fmt.Println(ok, a)
-
-	// }
-
-	return model.SOK
+	return model.SOK, nil
 }
 
 func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, int) {

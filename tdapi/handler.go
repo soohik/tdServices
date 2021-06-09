@@ -3,11 +3,16 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 	"tdapi/adapter/phoneclient"
 	"tdapi/clientmanager"
 	"tdapi/model"
 
 	"github.com/gin-gonic/gin"
+)
+
+const (
+	TDURL = "https://t.me/"
 )
 
 func register(c *gin.Context) {
@@ -56,17 +61,27 @@ func preregister(c *gin.Context) {
 }
 
 func JoinChatByInviteLink(c *gin.Context) {
+	var msg model.Message
+
 	phone, err := phoneclient.JsonToLink(c)
 	if err != nil {
 		return
 	}
-	ret := clientmanager.Joinlink(phone.Phone, phone.Url)
 
-	var msg model.Message
+	strArr := strings.Split(phone.Url, TDURL)
+	if len(strArr) <= 0 {
+		msg.Code = model.BadRequest
+		msg.Err = "不是有效的url"
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	ret, _ := clientmanager.Joinlink(phone.Phone, phone.Url, strArr[1])
+
 	if ret == model.SOK {
 		msg.Code = model.SOK
 
 	}
-
 	c.JSON(http.StatusOK, msg)
+
 }

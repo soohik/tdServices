@@ -6,6 +6,7 @@ const (
 	AuthSendTimeout = -1
 	AuthSenCodeErr  = -2
 	AuthorizationStateClosed
+	BadRequest     = 400
 	RegisterFailed = 409
 	PhoneNOTFOUND  = 404
 	JoinLinkUrlErr = 410
