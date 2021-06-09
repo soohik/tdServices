@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	TdlibDbDirectory    = "./tddata/"
-	TdlibFilesDirectory = "./tdfile/"
+	TdlibDbDirectory    = "../../tddata/"
+	TdlibFilesDirectory = "../../tdfile/"
 )
 
 // RegistrationUseCase implements RegistrationUseCaseInterface.

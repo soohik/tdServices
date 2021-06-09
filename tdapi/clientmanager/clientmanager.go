@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	tddata = "./tddata/"
-	tdfile = "./tdfile/"
+	tddata = "../../tddata/"
+	tdfile = "../../tdfile/"
 )
 
 type TdInstance struct {
