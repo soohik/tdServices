@@ -121,9 +121,29 @@ func InsertGroupsInfo(phone, groupname string) bool {
 
 }
 
-func GetAlGroups(agent string) ([]model.Groups, error) {
+func GetAllGroups(agent string) ([]model.Groups, error) {
 	var groups []model.Groups
 	rows, err := sqlHelp.sqldb.Raw("select * from td.groups where agent = ?", agent).Rows()
+	if err == nil {
+		defer rows.Close()
+	}
+
+	if err != nil {
+
+		return nil, nil
+	}
+	for rows.Next() {
+		var group model.Groups
+		// ScanRows 方法用于将一行记录扫描至结构体
+		sqlHelp.sqldb.ScanRows(rows, &group)
+		groups = append(groups, group)
+	}
+	return groups, nil
+}
+
+func GetMeGroups(phone string) ([]model.Groups, error) {
+	var groups []model.Groups
+	rows, err := sqlHelp.sqldb.Raw("select * from td.groupinfos  where phone = ?", phone).Rows()
 	if err == nil {
 		defer rows.Close()
 	}

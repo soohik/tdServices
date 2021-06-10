@@ -44,10 +44,10 @@ func JsonToLink(c *gin.Context) (*model.Linkurl, error) {
 }
 
 // GrpcToUser converts from grpc User type to domain Model user type
-func JsonToAgent(c *gin.Context) (*model.Groups, error) {
+func JsonToAgent(c *gin.Context) (*model.Agent, error) {
 
 	//声明接收的数据结构
-	var jsonData model.Groups
+	var jsonData model.Agent
 	// 将request的body中数据，自动按照json格式解析到结构体
 	if err := c.ShouldBindJSON(&jsonData); err != nil {
 		var msg model.Message
@@ -61,10 +61,10 @@ func JsonToAgent(c *gin.Context) (*model.Groups, error) {
 }
 
 // GrpcToUser converts from grpc User type to domain Model user type
-func JsonToMe(c *gin.Context) (*model.Groups, error) {
+func JsonToMe(c *gin.Context) (*model.Me, error) {
 
 	//声明接收的数据结构
-	var jsonData model.Groups
+	var jsonData model.Me
 	// 将request的body中数据，自动按照json格式解析到结构体
 	if err := c.ShouldBindJSON(&jsonData); err != nil {
 		var msg model.Message

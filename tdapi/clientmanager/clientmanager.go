@@ -268,9 +268,9 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 }
 
 func Getallgroups(agent string) ([]model.Groups, error) {
-	return dataservice.GetAlGroups(agent)
+	return dataservice.GetAllGroups(agent)
 }
 
 func GetMegroups(agent string) ([]model.Groups, error) {
-	return dataservice.GetAlGroups(agent)
+	return dataservice.GetMeGroups(agent)
 }
