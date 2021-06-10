@@ -89,6 +89,7 @@ func JoinChatByInviteLink(c *gin.Context) {
 
 func Getallgroups(c *gin.Context) {
 	var msg model.Message
+	msg.Code = model.SOK
 
 	agent, err := phoneclient.JsonToAgent(c)
 	if err != nil {
@@ -96,7 +97,32 @@ func Getallgroups(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	groups, err := clientmanager.Getallgroups(agent.Name)
+	groups, err := clientmanager.Getallgroups(agent.Agent)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	b, _ := json.Marshal(&groups)
+	err = json.Unmarshal(b, &msg.Data)
+	fmt.Println(err)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+func Getmegroups(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToMe(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	groups, err := clientmanager.GetMegroups(agent.Name)
 
 	if err != nil {
 		msg.Code = model.BadRequest
@@ -111,7 +137,8 @@ func Getallgroups(c *gin.Context) {
 
 }
 
-func Getmegroups(c *gin.Context) {
+//邀请
+func Invategroup(c *gin.Context) {
 	var msg model.Message
 
 	agent, err := phoneclient.JsonToMe(c)

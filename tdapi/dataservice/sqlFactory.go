@@ -121,7 +121,7 @@ func InsertGroupsInfo(phone, groupname string) bool {
 
 }
 
-func GetAllGroups(agent string) ([]model.Groups, error) {
+func GetAllGroups(agent int) ([]model.Groups, error) {
 	var groups []model.Groups
 	rows, err := sqlHelp.sqldb.Raw("select * from td.groups where agent = ?", agent).Rows()
 	if err == nil {
