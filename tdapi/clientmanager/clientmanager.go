@@ -17,47 +17,28 @@ const (
 	tdfile = "../../tdfile/"
 )
 
-type TdInstance struct {
-	Phone  string
-	ReReg  int //重试次数
-	Client *TDClient
-}
-
 // ListUserUseCase implements ListUseCaseInterface.
 type ClientManagerUseCase struct {
-	TdInstances []TdInstance
+	TdInstances map[string]*tdlib.Client
 }
 
 var ClientManager ClientManagerUseCase
 
 func (c *ClientManagerUseCase) LoadTdInstance() error {
 
-	clients, err := dataservice.GetAllPhone()
-	if err != nil {
-		return nil
-	}
-	c.AddTdlibClient(clients)
+	// clients, err := dataservice.GetAllPhone()
+	// if err != nil {
+	// 	return nil
+	// }
+	// // c.AddTdlibClient(clients)
+
+	c.TdInstances = make(map[string]*tdlib.Client)
 
 	return nil
 }
 
 //
 func (c *ClientManagerUseCase) RemoveClient(phone string) bool {
-
-	var index = -1
-	for index = range c.TdInstances {
-		if c.TdInstances[index].Phone == phone {
-			c.TdInstances[index].Client.tdlibClient.Close()
-			c.TdInstances[index].Client.tdlibClient = nil
-			c.TdInstances[index].Client = nil
-
-			break
-		}
-	}
-	if index >= 0 {
-		c.TdInstances = append(c.TdInstances[:index], c.TdInstances[index+1:]...)
-		return true
-	}
 
 	return false
 }
@@ -103,58 +84,45 @@ func PreRegisterPhone(phonenumber string) (bool, int) {
 
 }
 
-//增加单个客户端
-func (c *ClientManagerUseCase) ReAddClient(phonenumber string) {
+// //增加单个客户端
+// func (c *ClientManagerUseCase) ReAddClient(phonenumber string) {
 
-	find := c.RemoveClient(phonenumber)
+// 	find := c.RemoveClient(phonenumber)
 
-	if find {
+// 	if find {
 
-		var phone model.Phone
-		phone.Account = phonenumber
-		phone.Phone = phonenumber
-		phone.Registered = 0
-		phone.Tddata = tddata + phonenumber + "-tdlib-db"
+// 		var phone model.Phone
+// 		phone.Account = phonenumber
+// 		phone.Phone = phonenumber
+// 		phone.Registered = 0
+// 		phone.Tddata = tddata + phonenumber + "-tdlib-db"
 
-		phone.Tdfile = tdfile + phonenumber + "-tdlib-files"
+// 		phone.Tdfile = tdfile + phonenumber + "-tdlib-files"
 
-		if find { //插入成功
-			ClientManager.AddClient(phone)
-		}
-	}
+// 		if find { //插入成功
+// 			ClientManager.AddClient(phone)
+// 		}
+// 	}
 
-}
+// }
 
-//增加单个客户端
-func (c *ClientManagerUseCase) AddClient(m model.Phone) {
+// func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
 
-	client := TdInstance{}
-	client.Client = new(TDClient)
-	client.Phone = m.Phone
+// 	for _, value := range m {
+// 		client := TdInstance{}
+// 		client.Client = new(TDClient)
+// 		client.Phone = value.Phone
 
-	client.Client.AcountName = m.Account
-	client.Client.TdlibDbDirectory = m.Tddata
-	client.Client.TdlibFilesDirectory = m.Tdfile
+// 		client.Client.AcountName = value.Account
+// 		client.Client.TdlibDbDirectory = value.Tddata
+// 		client.Client.TdlibFilesDirectory = value.Tdfile
+// 		go client.Client.AddInstance()
+// 	}
 
-	go client.Client.AddInstance()
-}
-func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
-
-	for _, value := range m {
-		client := TdInstance{}
-		client.Client = new(TDClient)
-		client.Phone = value.Phone
-
-		client.Client.AcountName = value.Account
-		client.Client.TdlibDbDirectory = value.Tddata
-		client.Client.TdlibFilesDirectory = value.Tdfile
-		go client.Client.AddInstance()
-	}
-
-}
+// }
 
 func BuildClientManager() {
-	// ClientManager.LoadTdInstance()
+	ClientManager.LoadTdInstance()
 
 }
 
@@ -180,7 +148,6 @@ func Joinlink(account, linkurl, groupname string) (int, error) {
 		FileDirectory:       tdfile + account + "-tdlib-files",
 		IgnoreFileNames:     false,
 	})
-	defer client.Close() //关闭
 
 	currentState, _ := client.Authorize()
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
@@ -222,7 +189,6 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 		FileDirectory:       tdfile + account + "-tdlib-files",
 		IgnoreFileNames:     false,
 	})
-	defer client.Close() //关闭
 
 	for {
 		currentState, err := client.Authorize()
@@ -259,6 +225,8 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 			repclient.Username = user.Username
 			repclient.PhoneNumber = user.PhoneNumber
 			ret = model.SOK
+
+			c.TdInstances[account] = client
 			break
 
 		}
@@ -297,7 +265,7 @@ func AddContacts(c *model.Contacts) error {
 		FileDirectory:       tdfile + c.Phone + "-tdlib-files",
 		IgnoreFileNames:     false,
 	})
-	defer client.Close() //关闭
+	// defer client.Close() //关闭
 
 	currentState, _ := client.Authorize()
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
