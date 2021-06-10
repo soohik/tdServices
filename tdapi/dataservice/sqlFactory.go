@@ -141,8 +141,8 @@ func GetAllGroups(agent int) ([]model.Groups, error) {
 	return groups, nil
 }
 
-func GetMeGroups(phone string) ([]model.Groups, error) {
-	var groups []model.Groups
+func GetMeGroups(phone string) ([]model.Groupinfos, error) {
+	var groups []model.Groupinfos
 	rows, err := sqlHelp.sqldb.Raw("select * from td.groupinfos  where phone = ?", phone).Rows()
 	if err == nil {
 		defer rows.Close()
@@ -153,7 +153,7 @@ func GetMeGroups(phone string) ([]model.Groups, error) {
 		return nil, nil
 	}
 	for rows.Next() {
-		var group model.Groups
+		var group model.Groupinfos
 		// ScanRows 方法用于将一行记录扫描至结构体
 		sqlHelp.sqldb.ScanRows(rows, &group)
 		groups = append(groups, group)

@@ -271,6 +271,50 @@ func Getallgroups(agent int) ([]model.Groups, error) {
 	return dataservice.GetAllGroups(agent)
 }
 
-func GetMegroups(agent string) ([]model.Groups, error) {
+func GetMegroups(agent string) ([]model.Groupinfos, error) {
 	return dataservice.GetMeGroups(agent)
+}
+
+func AddContacts(c *model.Contacts) error {
+
+	fmt.Println(tddata + c.Phone + "-tdlib-db")
+	fmt.Println(tdfile + c.Phone + "-tdlib-files")
+
+	tdlib.SetLogVerbosityLevel(1)
+	// Create new instance of client
+	client := tdlib.NewClient(tdlib.Config{
+		APIID:               "228834",
+		APIHash:             "e4d4a67594f3ddadacab55ab48a6187a",
+		SystemLanguageCode:  "en",
+		DeviceModel:         "Server",
+		SystemVersion:       "1.0.0",
+		ApplicationVersion:  "1.0.0",
+		UseMessageDatabase:  true,
+		UseFileDatabase:     true,
+		UseChatInfoDatabase: true,
+		UseTestDataCenter:   false,
+		DatabaseDirectory:   tddata + c.Phone + "-tdlib-db",
+		FileDirectory:       tdfile + c.Phone + "-tdlib-files",
+		IgnoreFileNames:     false,
+	})
+	defer client.Close() //关闭
+
+	currentState, _ := client.Authorize()
+	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+		time.Sleep(300 * time.Millisecond)
+	}
+
+	var contacts []tdlib.Contact
+
+	for _, value := range c.Contents {
+
+		contact := tdlib.Contact{}
+		contact.PhoneNumber = value
+		contacts = append(contacts, contact)
+
+	}
+	ok, err := client.ImportContacts(contacts)
+	fmt.Println(ok, err)
+
+	return nil
 }
