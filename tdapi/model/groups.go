@@ -62,3 +62,25 @@ type Contacts struct {
 	Contactname  string `json:"contactname"`
 	Status       string `json:"status"`
 }
+
+// SELECT `taskinfo`.`tid`,
+//     `taskinfo`.`account`,
+//     `taskinfo`.`groupid`,
+//     `taskinfo`.`groupname`,
+//     `taskinfo`.`counts`,
+//     `taskinfo`.`cron`,
+//     `taskinfo`.`cycle`,
+//     `taskinfo`.`text`,
+//     `taskinfo`.`createtime`
+// FROM `td`.`taskinfo`;
+
+type Task struct {
+	Tid       string `json:"tid"`
+	Account   int    `json:"account"`
+	Groupid   string `json:"groupid"`
+	Groupname string `json:"groupname"`
+	Counts    string `json:"counts"`
+	Cron      string `json:"cron"`
+	Cycle     string `json:"cycle"`
+	Text      string `json:"text"`
+}

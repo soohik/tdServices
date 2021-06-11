@@ -7,9 +7,10 @@ require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-kivik/couchdb v2.0.0+incompatible // indirect
 	github.com/go-kivik/kivik v2.0.0+incompatible // indirect
-	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/jakecoffman/cron v0.0.0-20190106200828-7e2009c226a5
 	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/sirupsen/logrus v1.8.1

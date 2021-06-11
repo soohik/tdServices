@@ -22,6 +22,7 @@ func initializeRoutes() {
 		userRoutes.POST("/addcontact", ensureNotLoggedIn(), AddContacts) //联系人
 		userRoutes.POST("/getmecontacts", ensureNotLoggedIn(), GetmeContents)
 		userRoutes.POST("/getgroupcontact", ensureNotLoggedIn(), GetmeContents)
+		userRoutes.POST("/addtask", ensureNotLoggedIn(), Addtask)
 
 	}
 

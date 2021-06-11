@@ -16,7 +16,6 @@ github.com/gin-gonic/gin/render
 ## explicit
 # github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 ## explicit
-github.com/go-ozzo/ozzo-validation
 # github.com/go-playground/locales v0.13.0
 github.com/go-playground/locales
 github.com/go-playground/locales/currency
@@ -30,6 +29,9 @@ github.com/go-sql-driver/mysql
 # github.com/golang/protobuf v1.5.2
 ## explicit
 github.com/golang/protobuf/proto
+# github.com/jakecoffman/cron v0.0.0-20190106200828-7e2009c226a5
+## explicit
+github.com/jakecoffman/cron
 # github.com/jinzhu/inflection v1.0.0
 github.com/jinzhu/inflection
 # github.com/jinzhu/now v1.1.2

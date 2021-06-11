@@ -187,6 +187,33 @@ func Sendmessage(c *gin.Context) {
 
 }
 
+
+//发送
+func Addtask(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToMe(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	groups, err := clientmanager.GetMegroups(agent.Name)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	b, _ := json.Marshal(&groups)
+	_ = json.Unmarshal(b, &msg.Data)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+
 //发送
 func AddContacts(c *gin.Context) {
 	var msg model.Message

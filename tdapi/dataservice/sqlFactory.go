@@ -180,3 +180,24 @@ func InsertContact(m []model.Contacts) error {
 	return sqlHelp.sqldb.Exec(buffer.String()).Error
 
 }
+
+func LoadTaks() ([]model.Task, error) {
+
+	var tasks []model.Task
+	rows, err := sqlHelp.sqldb.Raw("select * from td.taskinfo").Rows()
+	if err == nil {
+		defer rows.Close()
+	}
+
+	if err != nil {
+
+		return tasks, err
+	}
+	for rows.Next() {
+		var task model.Task
+		// ScanRows 方法用于将一行记录扫描至结构体
+		sqlHelp.sqldb.ScanRows(rows, &task)
+		tasks = append(tasks, task)
+	}
+	return tasks, nil
+}
