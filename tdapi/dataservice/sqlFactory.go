@@ -1,6 +1,8 @@
 package dataservice
 
 import (
+	"bytes"
+	"fmt"
 	"tdapi/config"
 	"tdapi/model"
 
@@ -161,13 +163,20 @@ func GetMeGroups(phone string) ([]model.Groupinfos, error) {
 	return groups, nil
 }
 
-func InsertContact([]model.AddContacts) (model.Phone, bool) {
+func InsertContact(m []model.Contacts) error {
 
-	var phone model.Phone
-	// result := sqlHelp.sqldb.Where("phone = ?", phonenumber).First(&phone)
-	// if result.RowsAffected <= 0 {
-	// 	return phone, false
-	// }
+	var buffer bytes.Buffer
+	sql := "insert into `td.contacts` (`account`,`contactid`,`contactphone`,'contactname') values"
+	if _, err := buffer.WriteString(sql); err != nil {
+		return err
+	}
+	for i, e := range m {
+		if i == len(m)-1 {
+			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s');", e.Account, e.Contactid, e.Contactphone, e.Contactname))
+		} else {
+			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s'),", e.Account, e.Contactid, e.Contactphone, e.Contactname))
+		}
+	}
+	return sqlHelp.sqldb.Exec(buffer.String()).Error
 
-	return phone, true
 }

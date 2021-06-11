@@ -257,7 +257,7 @@ func GetmeContents(c *model.Me) error {
 	return nil
 }
 
-func (c *ClientManagerUseCase) InsertContact(m []model.AddContacts) (model.Phone, bool) {
+func (c *ClientManagerUseCase) InsertContact(m []model.Contacts) error {
 
 	return dataservice.InsertContact(m)
 
