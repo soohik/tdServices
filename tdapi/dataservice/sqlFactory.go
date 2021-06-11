@@ -160,3 +160,14 @@ func GetMeGroups(phone string) ([]model.Groupinfos, error) {
 	}
 	return groups, nil
 }
+
+func InsertContact([]model.AddContacts) (model.Phone, bool) {
+
+	var phone model.Phone
+	// result := sqlHelp.sqldb.Where("phone = ?", phonenumber).First(&phone)
+	// if result.RowsAffected <= 0 {
+	// 	return phone, false
+	// }
+
+	return phone, true
+}

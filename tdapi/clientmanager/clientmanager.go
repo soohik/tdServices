@@ -26,13 +26,13 @@ var ClientManager ClientManagerUseCase
 
 func (c *ClientManagerUseCase) LoadTdInstance() error {
 
-	// clients, err := dataservice.GetAllPhone()
-	// if err != nil {
-	// 	return nil
-	// }
-	// // c.AddTdlibClient(clients)
-
 	c.TdInstances = make(map[string]*tdlib.Client)
+
+	clients, err := dataservice.GetAllPhone()
+	if err != nil {
+		return nil
+	}
+	c.AddTdlibClient(clients)
 
 	return nil
 }
@@ -106,48 +106,26 @@ func PreRegisterPhone(phonenumber string) (bool, int) {
 
 // }
 
-// func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
+func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
 
-// 	for _, value := range m {
-// 		client := TdInstance{}
-// 		client.Client = new(TDClient)
-// 		client.Phone = value.Phone
+	for _, value := range m {
+		c.AddInstance(value.Account, "")
+	}
 
-// 		client.Client.AcountName = value.Account
-// 		client.Client.TdlibDbDirectory = value.Tddata
-// 		client.Client.TdlibFilesDirectory = value.Tdfile
-// 		go client.Client.AddInstance()
-// 	}
-
-// }
+}
 
 func BuildClientManager() {
+
 	ClientManager.LoadTdInstance()
 
 }
 
 func Joinlink(account, linkurl, groupname string) (int, error) {
 
+	client := ClientManager.TdInstances[account]
+
 	dataservice.InsertGroup(groupname, linkurl)
 	dataservice.InsertGroupsInfo(account, groupname)
-
-	tdlib.SetLogVerbosityLevel(1)
-	// Create new instance of client
-	client := tdlib.NewClient(tdlib.Config{
-		APIID:               "228834",
-		APIHash:             "e4d4a67594f3ddadacab55ab48a6187a",
-		SystemLanguageCode:  "en",
-		DeviceModel:         "Server",
-		SystemVersion:       "1.0.0",
-		ApplicationVersion:  "1.0.0",
-		UseMessageDatabase:  true,
-		UseFileDatabase:     true,
-		UseChatInfoDatabase: true,
-		UseTestDataCenter:   false,
-		DatabaseDirectory:   tddata + account + "-tdlib-db",
-		FileDirectory:       tdfile + account + "-tdlib-files",
-		IgnoreFileNames:     false,
-	})
 
 	currentState, _ := client.Authorize()
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
@@ -243,29 +221,12 @@ func GetMegroups(agent string) ([]model.Groupinfos, error) {
 	return dataservice.GetMeGroups(agent)
 }
 
-func AddContacts(c *model.Contacts) error {
+func AddContacts(c *model.AddContacts) error {
 
-	fmt.Println(tddata + c.Phone + "-tdlib-db")
-	fmt.Println(tdfile + c.Phone + "-tdlib-files")
-
-	tdlib.SetLogVerbosityLevel(1)
-	// Create new instance of client
-	client := tdlib.NewClient(tdlib.Config{
-		APIID:               "228834",
-		APIHash:             "e4d4a67594f3ddadacab55ab48a6187a",
-		SystemLanguageCode:  "en",
-		DeviceModel:         "Server",
-		SystemVersion:       "1.0.0",
-		ApplicationVersion:  "1.0.0",
-		UseMessageDatabase:  true,
-		UseFileDatabase:     true,
-		UseChatInfoDatabase: true,
-		UseTestDataCenter:   false,
-		DatabaseDirectory:   tddata + c.Phone + "-tdlib-db",
-		FileDirectory:       tdfile + c.Phone + "-tdlib-files",
-		IgnoreFileNames:     false,
-	})
-	// defer client.Close() //关闭
+	client := ClientManager.TdInstances[c.Phone]
+	if client == nil {
+		return errors.New("找不到账号！")
+	}
 
 	currentState, _ := client.Authorize()
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
@@ -285,4 +246,19 @@ func AddContacts(c *model.Contacts) error {
 	fmt.Println(ok, err)
 
 	return nil
+}
+
+func GetmeContents(c *model.Me) error {
+	client := ClientManager.TdInstances[c.Name]
+	if client == nil {
+		return errors.New("找不到账号！")
+	}
+	client.GetContacts()
+	return nil
+}
+
+func (c *ClientManagerUseCase) InsertContact(m []model.AddContacts) (model.Phone, bool) {
+
+	return dataservice.InsertContact(m)
+
 }

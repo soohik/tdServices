@@ -31,6 +31,8 @@ func runServer() error {
 
 	initializeRoutes()
 
+	clientmanager.BuildClientManager()
+
 	//l, err:=net.Listen(GRPC_NETWORK, GRPC_ADDRESS)
 
 	// LoadTdList(sc)
@@ -45,8 +47,6 @@ func main() {
 
 	config.LoadConfigs(filename)
 	dataservice.SqlBuild()
-	clientmanager.BuildClientManager()
-
 	if err := runServer(); err != nil {
 
 		panic(err)

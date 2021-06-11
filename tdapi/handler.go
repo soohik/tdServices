@@ -211,3 +211,53 @@ func AddContacts(c *gin.Context) {
 	c.JSON(http.StatusOK, msg)
 
 }
+
+//发送
+func GetmeContents(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToMe(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	err = clientmanager.GetmeContents(agent)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	// b, _ := json.Marshal(&groups)
+	// _ = json.Unmarshal(b, &msg.Data)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+//发送
+func GetgroupContents(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToGroup(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	// err = clientmanager.GetmeContents(agent)
+
+	// if err != nil {
+	// 	msg.Code = model.BadRequest
+	// 	c.JSON(http.StatusOK, msg)
+	// 	return
+	// }
+
+	// b, _ := json.Marshal(&groups)
+	// _ = json.Unmarshal(b, &msg.Data)
+
+	c.JSON(http.StatusOK, msg)
+
+}

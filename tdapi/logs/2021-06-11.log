@@ -1,0 +1,5 @@
+time="2021-06-11 06:22:05" level=info msg="Error getting current state: 639185604101 timeout"
+time="2021-06-11 06:22:05" level=info msg="run server!"
+time="2021-06-11 06:28:40" level=info msg="Authorization Ready! Let's rock639185604101"
+time="2021-06-11 06:28:40" level=info msg="run server!"
+time="2021-06-11 06:31:10" level=info msg="| 200 |  4.891806369s |   192.168.8.144 | POST | /phone/joinlinkurl |"
