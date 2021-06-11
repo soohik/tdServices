@@ -60,4 +60,5 @@ type Contacts struct {
 	Contactid    int    `json:"contactid"`
 	Contactphone string `json:"contactphone"`
 	Contactname  string `json:"contactname"`
+	Status       string `json:"status"`
 }

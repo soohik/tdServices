@@ -166,15 +166,15 @@ func GetMeGroups(phone string) ([]model.Groupinfos, error) {
 func InsertContact(m []model.Contacts) error {
 
 	var buffer bytes.Buffer
-	sql := "insert into `td.contacts` (`account`,`contactid`,`contactphone`,'contactname') values"
+	sql := "insert into td.contacts (`account`,`contactid`,`contactphone`,`contactname`,`status`) values"
 	if _, err := buffer.WriteString(sql); err != nil {
 		return err
 	}
 	for i, e := range m {
 		if i == len(m)-1 {
-			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s');", e.Account, e.Contactid, e.Contactphone, e.Contactname))
+			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s','%s');", e.Account, e.Contactid, e.Contactphone, e.Contactname, e.Status))
 		} else {
-			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s'),", e.Account, e.Contactid, e.Contactphone, e.Contactname))
+			buffer.WriteString(fmt.Sprintf("('%s',%d,'%s','%s','%s'),", e.Account, e.Contactid, e.Contactphone, e.Contactname, e.Status))
 		}
 	}
 	return sqlHelp.sqldb.Exec(buffer.String()).Error

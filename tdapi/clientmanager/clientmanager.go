@@ -234,6 +234,7 @@ func AddContacts(c *model.AddContacts) error {
 	}
 
 	var contacts []tdlib.Contact
+	var m []model.Contacts
 
 	for _, value := range c.Contents {
 
@@ -242,10 +243,23 @@ func AddContacts(c *model.AddContacts) error {
 		contacts = append(contacts, contact)
 
 	}
-	ok, err := client.ImportContacts(contacts)
-	fmt.Println(ok, err)
+	ok, _ := client.ImportContacts(contacts)
+	for _, value := range ok.UserIDs {
+		var k model.Contacts
 
-	return nil
+		user, _ := client.GetUser(value)
+		fmt.Println(user)
+
+		k.Account = c.Phone
+		k.Contactid = int(user.ID)
+		k.Contactname = user.Username
+		k.Contactphone = user.PhoneNumber
+		k.Status = string(user.Status.GetUserStatusEnum())
+		m = append(m, k)
+	}
+
+	return dataservice.InsertContact(m)
+
 }
 
 func GetmeContents(c *model.Me) error {
