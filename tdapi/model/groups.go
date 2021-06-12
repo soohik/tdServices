@@ -79,7 +79,7 @@ type Task struct {
 	Account   int    `json:"account"`
 	Groupid   string `json:"groupid"`
 	Groupname string `json:"groupname"`
-	Counts    string `json:"counts"`
+	Counts    int    `json:"counts"`
 	Cron      int    `json:"cron"`
 	Cycle     int    `json:"cycle"`
 	Text      string `json:"text"`

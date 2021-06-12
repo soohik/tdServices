@@ -201,3 +201,13 @@ func LoadTaks() ([]model.Task, error) {
 	}
 	return tasks, nil
 }
+
+func InsertTasklog(tid int) error {
+
+	return nil
+}
+
+func RemoveTask(tid int) error {
+
+	return nil
+}
