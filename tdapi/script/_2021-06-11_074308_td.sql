@@ -11,6 +11,7 @@ CREATE TABLE `contacts` (
   `contactid` int NOT NULL COMMENT 'id',
   `contactphone` varchar(45) DEFAULT NULL COMMENT '手机号码\n',
   `contactname` varchar(45) DEFAULT NULL COMMENT '联系人账号\n',
+  `status` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`account`,`contactid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -45,3 +46,27 @@ CREATE TABLE `phones` (
   `agent` int DEFAULT NULL,
   PRIMARY KEY (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS taskinfo;
+CREATE TABLE `taskinfo` (
+  `tid` int NOT NULL AUTO_INCREMENT,
+  `account` varchar(45) DEFAULT NULL,
+  `groupid` int DEFAULT NULL,
+  `groupname` varchar(45) DEFAULT NULL,
+  `counts` int DEFAULT NULL COMMENT '循环次数',
+  `cron` int DEFAULT NULL COMMENT '间隔次数秒',
+  `cycle` int DEFAULT NULL COMMENT '1 循环 0 不循环',
+  `text` varchar(1024) DEFAULT NULL COMMENT '发送内容',
+  `createtime` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`tid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='任务信息';
+
+DROP TABLE IF EXISTS tasklogs;
+CREATE TABLE `tasklogs` (
+  `tid` int NOT NULL,
+  `counts` int DEFAULT NULL,
+  `countsed` int DEFAULT NULL,
+  `status` int DEFAULT NULL COMMENT ' 0 等等执行\n\n\nstatus 1 开始执行\n\nstatus 2 执行完毕\n\nstatus 4 取消\n',
+  `operid` int DEFAULT NULL,
+  `createtime` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='发送任务执行表';
