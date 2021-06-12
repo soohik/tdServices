@@ -11,3 +11,6 @@ time="2021-06-11 08:44:30" level=info msg="| 200 | 1m47.244542442s |   192.168.8
 time="2021-06-11 09:00:07" level=info msg="Authorization Ready! Let's rock639185604101"
 time="2021-06-11 09:00:07" level=info msg="run server!"
 time="2021-06-11 09:02:25" level=info msg="| 200 | 58.845753173s |   192.168.8.144 | POST | /phone/addcontact |"
+time="2021-06-11 12:22:32" level=info msg="Authorization Ready! Let's rock639185604101"
+time="2021-06-11 12:24:39" level=info msg="Authorization Ready! Let's rock639185604101"
+time="2021-06-11 12:24:39" level=info msg="run server!"

@@ -52,7 +52,7 @@ type Groupinfos struct {
 
 type Friends struct {
 	Cids  []int32 `json:"cids"`
-	UName string  `json:"name"`
+	Uname string  `json:"name"`
 }
 
 type Contacts struct {
@@ -75,12 +75,12 @@ type Contacts struct {
 // FROM `td`.`taskinfo`;
 
 type Task struct {
-	Tid       string `json:"tid"`
+	Tid       int    `json:"tid"`
 	Account   int    `json:"account"`
 	Groupid   string `json:"groupid"`
 	Groupname string `json:"groupname"`
 	Counts    string `json:"counts"`
-	Cron      string `json:"cron"`
-	Cycle     string `json:"cycle"`
+	Cron      int    `json:"cron"`
+	Cycle     int    `json:"cycle"`
 	Text      string `json:"text"`
 }

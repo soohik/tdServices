@@ -9,17 +9,22 @@ import (
 
 var task *cron.Cron
 
-type TestJob struct {
+const (
+	IsCycle = 1
+)
+
+type Job struct {
+	Tid     int
+	Account int
+	Groupid string
+	Counts  string
+	Cron    int
+	Cycle   int
+	Text    string
+	Shut    chan int
 }
 
-func (t TestJob) Run() {
-	fmt.Println("testJob1...")
-}
-
-type Test2Job struct {
-}
-
-func (t Test2Job) Run() {
+func (t Job) Run() {
 	fmt.Println("testJob2...")
 }
 
@@ -39,7 +44,27 @@ func LoadTasks() {
 
 }
 
-func InsertTask() {
+func InsertTask(t []Job) {
+	for _, value := range t {
+		var spec string
+
+		if value.Cycle == IsCycle {
+			spec = fmt.Sprintf("*/%d * * * *", value.Cron)
+		}
+
+		j := Job{
+			Tid:     value.Tid,
+			Account: value.Account,
+			Groupid: value.Groupid,
+			Counts:  value.Counts,
+
+			Cycle: value.Cycle,
+			Text:  value.Text,
+			Shut:  make(chan int, 1),
+		}
+
+		fmt.Println(value, j, spec)
+	}
 }
 
 func CloseTask() {

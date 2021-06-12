@@ -7,6 +7,7 @@ import (
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
+	"tdapi/tasks"
 	"time"
 
 	"github.com/Arman92/go-tdlib"
@@ -117,6 +118,7 @@ func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
 func BuildClientManager() {
 
 	ClientManager.LoadTdInstance()
+	go tasks.InitTasks()
 
 }
 
@@ -219,6 +221,20 @@ func Getallgroups(agent int) ([]model.Groups, error) {
 
 func GetMegroups(agent string) ([]model.Groupinfos, error) {
 	return dataservice.GetMeGroups(agent)
+}
+
+func CreateBasicGroup(account string, f model.Friends) error {
+	client := ClientManager.TdInstances[account]
+	if client == nil {
+		return errors.New("找不到账号！")
+	}
+	currentState, _ := client.Authorize()
+	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+		time.Sleep(300 * time.Millisecond)
+	}
+	client.CreateNewBasicGroupChat(f.Cids, f.Uname)
+
+	return nil
 }
 
 func AddContacts(c *model.AddContacts) error {

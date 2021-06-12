@@ -147,7 +147,7 @@ func Invategroup(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	// groups, err := clientmanager.GetMegroups(agent.Name)
+	// groups, err := clientmanager.GetMegroups (agent.Name)
 
 	// if err != nil {
 	// 	msg.Code = model.BadRequest
@@ -187,7 +187,6 @@ func Sendmessage(c *gin.Context) {
 
 }
 
-
 //发送
 func Addtask(c *gin.Context) {
 	var msg model.Message
@@ -212,7 +211,6 @@ func Addtask(c *gin.Context) {
 	c.JSON(http.StatusOK, msg)
 
 }
-
 
 //发送
 func AddContacts(c *gin.Context) {
