@@ -181,9 +181,9 @@ func InsertContact(m []model.Contacts) error {
 
 }
 
-func LoadTaks() ([]model.Task, error) {
+func LoadTaks() ([]model.Taskinfo, error) {
 
-	var tasks []model.Task
+	var tasks []model.Taskinfo
 	rows, err := sqlHelp.sqldb.Raw("select * from td.taskinfo").Rows()
 	if err == nil {
 		defer rows.Close()
@@ -194,7 +194,7 @@ func LoadTaks() ([]model.Task, error) {
 		return tasks, err
 	}
 	for rows.Next() {
-		var task model.Task
+		var task model.Taskinfo
 		// ScanRows 方法用于将一行记录扫描至结构体
 		sqlHelp.sqldb.ScanRows(rows, &task)
 		tasks = append(tasks, task)
@@ -208,6 +208,9 @@ func InsertTasklog(tid int) error {
 }
 
 func RemoveTask(tid int) error {
+
+	var task model.Taskinfo
+	sqlHelp.sqldb.Where("tid = ?", tid).Delete(&task)
 
 	return nil
 }

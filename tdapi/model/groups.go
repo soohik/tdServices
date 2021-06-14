@@ -74,7 +74,7 @@ type Contacts struct {
 //     `taskinfo`.`createtime`
 // FROM `td`.`taskinfo`;
 
-type Task struct {
+type Taskinfo struct {
 	Tid       int    `json:"tid"`
 	Account   string `json:"account"`
 	Groupid   string `json:"groupid"`
@@ -83,4 +83,14 @@ type Task struct {
 	Cron      int    `json:"cron"`
 	Cycle     int    `json:"cycle"`
 	Text      string `json:"text"`
+}
+
+//任务记录
+type Tasklog struct {
+	Tid      int    `json:"tid"`
+	Counts   int    `json:"counts"`
+	Countsed int    `json:"Countsed"`
+	Status   int    `json:"status"`
+	Operid   int    `json:"operid"`
+	Logs     string `json:"Logs"`
 }

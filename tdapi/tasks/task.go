@@ -6,7 +6,6 @@ import (
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
-	"time"
 
 	"github.com/robfig/cron/v3"
 )
@@ -41,11 +40,12 @@ func (t Job) Run() {
 		task.Remove(t.Entry)
 		log.Info("清理定时器", t.Account, t.Tid)
 	}
-	fmt.Println(t.Tid, t.Account, t.Text, time.Now())
+	log.Info("发送消息", t.Account, t.Text)
 
 	clientmanager.SendMessage(t.Account, t.Groupname, t.Text)
 	t.NeedCounts--
 	t.Countsed++
+
 }
 
 func InitTasks() {
@@ -61,7 +61,7 @@ func InitTasks() {
 
 }
 
-func InsertTask(t []model.Task) {
+func InsertTask(t []model.Taskinfo) {
 	for _, value := range t {
 		var spec string
 
