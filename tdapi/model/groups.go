@@ -76,7 +76,7 @@ type Contacts struct {
 
 type Task struct {
 	Tid       int    `json:"tid"`
-	Account   int    `json:"account"`
+	Account   string `json:"account"`
 	Groupid   string `json:"groupid"`
 	Groupname string `json:"groupname"`
 	Counts    int    `json:"counts"`

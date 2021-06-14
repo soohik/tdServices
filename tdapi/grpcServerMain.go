@@ -5,6 +5,7 @@ import (
 	"tdapi/config"
 	"tdapi/dataservice"
 	"tdapi/log"
+	"tdapi/tasks"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +33,7 @@ func runServer() error {
 	initializeRoutes()
 
 	clientmanager.BuildClientManager()
+	go tasks.InitTasks()
 
 	//l, err:=net.Listen(GRPC_NETWORK, GRPC_ADDRESS)
 

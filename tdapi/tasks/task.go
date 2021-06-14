@@ -2,6 +2,7 @@ package tasks
 
 import (
 	"fmt"
+	"tdapi/clientmanager"
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
@@ -18,8 +19,9 @@ const (
 
 type Job struct {
 	Tid        int
-	Account    int
+	Account    string
 	Groupid    string
+	Groupname  string //组名
 	NeedCounts int
 	Countsed   int //已经执行次数
 	Cron       int
@@ -40,6 +42,8 @@ func (t Job) Run() {
 		log.Info("清理定时器", t.Account, t.Tid)
 	}
 	fmt.Println(t.Tid, t.Account, t.Text, time.Now())
+
+	clientmanager.SendMessage(t.Account, t.Groupname, t.Text)
 	t.NeedCounts--
 	t.Countsed++
 }
@@ -69,6 +73,7 @@ func InsertTask(t []model.Task) {
 			Tid:        value.Tid,
 			Account:    value.Account,
 			Groupid:    value.Groupid,
+			Groupname:  value.Groupname,
 			NeedCounts: value.Counts,
 			Cycle:      value.Cycle, //需要循环
 			Text:       value.Text,

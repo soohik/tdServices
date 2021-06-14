@@ -7,7 +7,6 @@ import (
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
-	"tdapi/tasks"
 	"time"
 
 	"github.com/Arman92/go-tdlib"
@@ -118,7 +117,6 @@ func (c *ClientManagerUseCase) AddTdlibClient(m []model.Phone) {
 func BuildClientManager() {
 
 	ClientManager.LoadTdInstance()
-	go tasks.InitTasks()
 
 }
 
@@ -291,4 +289,30 @@ func (c *ClientManagerUseCase) InsertContact(m []model.Contacts) error {
 
 	return dataservice.InsertContact(m)
 
+}
+
+func SendMessage(account, groupname, text string) error {
+
+	client := ClientManager.TdInstances[account]
+	if client == nil {
+		return errors.New("找不到用户")
+	}
+
+	currentState, _ := client.Authorize()
+	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+		time.Sleep(300 * time.Millisecond)
+	}
+
+	chat, err := client.SearchChatsOnServer(groupname, 1)
+	//chat, err := client.SearchChats(groupname, 1)
+	if err != nil {
+		return errors.New("找不到组！")
+	}
+	inputMsgTxt := tdlib.NewInputMessageText(tdlib.NewFormattedText(text, nil), true, true)
+	_, err = client.SendMessage(chat.ChatIDs[0], int64(0), int64(0), nil, nil, inputMsgTxt)
+	if err != nil {
+		return errors.New("发送失败")
+	}
+
+	return nil
 }
