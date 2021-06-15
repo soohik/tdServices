@@ -129,10 +129,10 @@ func JsonToContents(c *gin.Context) (*model.AddContacts, error) {
 }
 
 // GrpcToUser converts from grpc User type to domain Model user type
-func JsonToGroup(c *gin.Context) (*model.AddContacts, error) {
+func JsonToGroup(c *gin.Context) (*model.SaveGroup, error) {
 
 	//声明接收的数据结构
-	var jsonData model.AddContacts
+	var jsonData model.SaveGroup
 	// 将request的body中数据，自动按照json格式解析到结构体
 	if err := c.ShouldBindJSON(&jsonData); err != nil {
 		var msg model.Message

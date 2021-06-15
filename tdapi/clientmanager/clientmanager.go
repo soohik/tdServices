@@ -4,6 +4,7 @@ package clientmanager
 import (
 	"errors"
 	"fmt"
+	"math"
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
@@ -249,8 +250,31 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 	return repclient, ret
 }
 
-func Getallgroups(agent int) ([]model.Groups, error) {
-	return dataservice.GetAllGroups(agent)
+func Getallgroups(account string, agent int) ([]model.Groups, error) {
+	// return dataservice.GetAllGroups(agent)
+	var groups []model.Groups
+
+	client := ClientManager.TdInstances[account]
+	if client == nil {
+		return nil, errors.New("找不到账号！")
+	}
+	currentState, _ := client.Authorize()
+	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
+		time.Sleep(300 * time.Millisecond)
+	}
+
+	chats, err := getChatList(client, 2, false)
+	if err != nil {
+		return nil, err
+	}
+	for _, value := range chats {
+		var m model.Groups
+		m.Uid = value.ID
+		m.Name = value.Title
+		groups = append(groups, m)
+	}
+
+	return groups, nil
 }
 
 func GetMegroups(agent string) ([]model.Groupinfos, error) {
@@ -266,7 +290,6 @@ func CreateBasicGroup(account string, f model.Friends) error {
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
 		time.Sleep(300 * time.Millisecond)
 	}
-	// chat, err := client.CreateNewBasicGroupChat(f.Cids, f.Uname)
 
 	chat, err := client.CreateNewSupergroupChat(f.Uname, false, f.Uname, nil, false)
 	chattype := chat.Type.(*tdlib.ChatTypeSupergroup)
@@ -367,21 +390,6 @@ func SendMessage(account, groupname, text string) error {
 
 	chat, err := client.SearchChatsOnServer(groupname, 1)
 
-	// tdlib.CallID
-	// sup, aer := client.GenerateChatInviteLink(chat.ChatIDs[0])
-
-	// sup, aer := client.SearchPublicChat(groupname)
-
-	// client.up
-	// link, _ := client.GenerateChatInviteLink(chat.ChatIDs[0])
-
-	// TdApi.SearchPublicChat
-	// 调用 TdApi.GetSupergroup
-	// 调用 TdApi.GetSupergroupFullInfo
-
-	// // sup, aer := client.GetBasicGroupFullInfo(int32(chat.ChatIDs[0]))
-
-	// chat, err := client.SearchChats(groupname, 1)
 	if err != nil {
 		return errors.New("找不到组！")
 	}
@@ -397,4 +405,54 @@ func SendMessage(account, groupname, text string) error {
 	}
 
 	return nil
+}
+
+// var allChats []*tdlib.Chat
+// var haveFullChatList bool
+
+// see https://stackoverflow.com/questions/37782348/how-to-use-getchats-in-tdlib
+func getChatList(client *tdlib.Client, limit int, haveFullChatList bool) ([]*tdlib.Chat, error) {
+
+	var allChats []*tdlib.Chat
+
+	if !haveFullChatList && limit > len(allChats) {
+		offsetOrder := int64(math.MaxInt64)
+		offsetChatID := int64(0)
+		var chatList = tdlib.NewChatListMain()
+		var lastChat *tdlib.Chat
+
+		if len(allChats) > 0 {
+			lastChat = allChats[len(allChats)-1]
+			for i := 0; i < len(lastChat.Positions); i++ {
+				//Find the main chat list
+				if lastChat.Positions[i].List.GetChatListEnum() == tdlib.ChatListMainType {
+					offsetOrder = int64(lastChat.Positions[i].Order)
+				}
+			}
+			offsetChatID = lastChat.ID
+		}
+
+		// get chats (ids) from tdlib
+		chats, err := client.GetChats(chatList, tdlib.JSONInt64(offsetOrder),
+			offsetChatID, int32(limit-len(allChats)))
+		if err != nil {
+			return nil, err
+		}
+		if len(chats.ChatIDs) == 0 {
+			haveFullChatList = true
+			return allChats, nil
+		}
+
+		for _, chatID := range chats.ChatIDs {
+			// get chat info from tdlib
+			chat, err := client.GetChat(chatID)
+			if err == nil {
+				allChats = append(allChats, chat)
+			} else {
+				return nil, err
+			}
+		}
+		// return getChatList(client, limit, allChats, false)
+	}
+	return allChats, nil
 }

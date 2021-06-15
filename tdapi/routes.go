@@ -15,13 +15,13 @@ func initializeRoutes() {
 		userRoutes.POST("/register", ensureNotLoggedIn(), register)
 		userRoutes.POST("/preregister", ensureNotLoggedIn(), preregister)
 		userRoutes.POST("/joinlinkurl", ensureNotLoggedIn(), JoinChatByInviteLink)
-		userRoutes.POST("/getallgroups", ensureNotLoggedIn(), Getallgroups)
-		userRoutes.POST("/getmegroups", ensureNotLoggedIn(), Getmegroups)
+		userRoutes.POST("/getallgroups", ensureNotLoggedIn(), Getaddgroups) //获取自己加入的组
+		userRoutes.POST("/getmegroups", ensureNotLoggedIn(), Getmegroups)   //获取自己创建的组
 		userRoutes.POST("/invatefriends", ensureNotLoggedIn(), Invategroup) //创建组邀请
 		userRoutes.POST("/sendmessage", ensureNotLoggedIn(), Sendmessage)
 		userRoutes.POST("/addcontact", ensureNotLoggedIn(), AddContacts) //联系人
 		userRoutes.POST("/getmecontacts", ensureNotLoggedIn(), GetmeContents)
-		userRoutes.POST("/getgroupcontact", ensureNotLoggedIn(), GetmeContents)
+		userRoutes.POST("/savegroupcontact", ensureNotLoggedIn(), SavegroupContents)
 		userRoutes.POST("/addtask", ensureNotLoggedIn(), Addtask)
 
 	}
