@@ -120,12 +120,13 @@ func BuildClientManager() {
 
 }
 
+//创建群，邀请别人加入群
 func Joinlink(account, linkurl, groupname string) (int, error) {
 
 	client := ClientManager.TdInstances[account]
 
-	dataservice.InsertGroup(groupname, linkurl)
-	dataservice.InsertGroupsInfo(account, groupname)
+	dataservice.InsertGroup(groupname, linkurl) //
+	// dataservice.InsertGroupsInfo(account, groupname)
 
 	currentState, _ := client.Authorize()
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
@@ -218,9 +219,9 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 
 		for update := range rawUpdates {
 
-			fmt.Println(update)
-			m := update.Data
-			fmt.Println(m)
+			// fmt.Println(update)
+			_ = update.Data
+			// fmt.Println(m)
 			// if m["@type"] == "updateNewChat" {
 			// 	var update tdlib.UpdateNewChat
 			// 	err = json.Unmarshal(result.Raw, &update)
@@ -264,6 +265,10 @@ func CreateBasicGroup(account string, f model.Friends) error {
 	// chat, err := client.CreateNewBasicGroupChat(f.Cids, f.Uname)
 
 	chat, err := client.CreateNewSupergroupChat(f.Uname, false, f.Uname, nil, false)
+	chattype := chat.Type.(*tdlib.ChatTypeSupergroup)
+	if chattype == nil {
+		return errors.New("转换错误！")
+	}
 
 	if err != nil {
 		return err
@@ -273,11 +278,17 @@ func CreateBasicGroup(account string, f model.Friends) error {
 		return err
 	}
 
-	if err != nil {
-		return err
-	}
+	var m model.Groupinfos
+	m.Chatid = chat.ID
+	m.Groupname = f.Uname
+	m.Phone = account
+	m.Uid = chattype.SupergroupID
 
-	fmt.Println(chat)
+	ok, _ := client.SetSupergroupUsername(m.Uid, "kankanjiuzhidaole")
+	fmt.Println(ok)
+
+	dataservice.InsertGroupsInfo(m)
+
 	return nil
 }
 

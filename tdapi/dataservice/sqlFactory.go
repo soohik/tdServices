@@ -107,16 +107,13 @@ func InsertGroup(groupname, linkurl string) bool {
 
 }
 
-func InsertGroupsInfo(phone, groupname string) bool {
+func InsertGroupsInfo(group model.Groupinfos) bool {
 
-	var group model.Groupinfos
-	result := sqlHelp.sqldb.Where("phone = ? and groupname = ?", phone, groupname).First(&group)
+	result := sqlHelp.sqldb.Where("chatid = ?", group.Uid).First(&group)
 
 	if result.RowsAffected > 0 {
 		return true
 	}
-	group.Phone = phone
-	group.Groupname = groupname
 
 	sqlHelp.sqldb.Create(&group)
 	return true
