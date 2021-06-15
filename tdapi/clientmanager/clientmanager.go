@@ -13,6 +13,10 @@ import (
 )
 
 const (
+	TDURL = "https://t.me/"
+)
+
+const (
 	tddata = "../../tddata/"
 	tdfile = "../../tdfile/"
 )
@@ -280,14 +284,15 @@ func CreateBasicGroup(account string, f model.Friends) error {
 
 	var m model.Groupinfos
 	m.Chatid = chat.ID
-	m.Groupname = f.Uname
+	m.Groupname = fmt.Sprintf("%s%s", TDURL, f.Uname)
 	m.Phone = account
 	m.Uid = chattype.SupergroupID
 
-	ok, _ := client.SetSupergroupUsername(m.Uid, "kankanjiuzhidaole")
-	fmt.Println(ok)
+	_, err = client.SetSupergroupUsername(m.Uid, m.Groupname)
 
-	dataservice.InsertGroupsInfo(m)
+	if err != nil {
+		dataservice.InsertGroupsInfo(m)
+	}
 
 	return nil
 }
