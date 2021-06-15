@@ -52,7 +52,9 @@ func InitTasks() {
 	task = cron.New()
 
 	t, err := dataservice.LoadTaks()
-	fmt.Println(t, err)
+	if err != nil {
+		log.Info("加载定时任务失败！")
+	}
 	InsertTask(t)
 	//启动计划任务
 	task.Start()

@@ -147,13 +147,13 @@ func Invategroup(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	// groups, err := clientmanager.GetMegroups (agent.Name)
+	err = clientmanager.CreateBasicGroup(agent.Account, *agent)
 
-	// if err != nil {
-	// 	msg.Code = model.BadRequest
-	// 	c.JSON(http.StatusOK, msg)
-	// 	return
-	// }
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
 
 	// b, _ := json.Marshal(&groups)
 	// _ = json.Unmarshal(b, &msg.Data)

@@ -17,7 +17,7 @@ func initializeRoutes() {
 		userRoutes.POST("/joinlinkurl", ensureNotLoggedIn(), JoinChatByInviteLink)
 		userRoutes.POST("/getallgroups", ensureNotLoggedIn(), Getallgroups)
 		userRoutes.POST("/getmegroups", ensureNotLoggedIn(), Getmegroups)
-		userRoutes.POST("/invatefriends", ensureNotLoggedIn(), Invategroup) //邀请
+		userRoutes.POST("/invatefriends", ensureNotLoggedIn(), Invategroup) //创建组邀请
 		userRoutes.POST("/sendmessage", ensureNotLoggedIn(), Sendmessage)
 		userRoutes.POST("/addcontact", ensureNotLoggedIn(), AddContacts) //联系人
 		userRoutes.POST("/getmecontacts", ensureNotLoggedIn(), GetmeContents)

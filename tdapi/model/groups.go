@@ -51,8 +51,9 @@ type Groupinfos struct {
 }
 
 type Friends struct {
-	Cids  []int32 `json:"cids"`
-	Uname string  `json:"name"`
+	Account string  `json:"account"`
+	Cids    []int32 `json:"cids"`
+	Uname   string  `json:"name"`
 }
 
 type Contacts struct {

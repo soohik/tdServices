@@ -68,5 +68,6 @@ CREATE TABLE `tasklogs` (
   `countsed` int DEFAULT NULL,
   `status` int DEFAULT NULL COMMENT ' 0 等等执行\n\n\nstatus 1 开始执行\n\nstatus 2 执行完毕\n\nstatus 4 取消\n',
   `operid` int DEFAULT NULL,
-  `createtime` datetime DEFAULT CURRENT_TIMESTAMP
+  `createtime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `logs` varchar(255) DEFAULT NULL COMMENT '错误'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='发送任务执行表';

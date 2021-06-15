@@ -196,7 +196,7 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 			}
 
 		} else if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateReadyType {
-			log.Info("Authorization Ready! Let's rock", account)
+			log.Info("验证通过-- ", account)
 			user, _ := client.GetMe()
 			repclient.Id = user.ID
 			repclient.Name = user.FirstName
@@ -209,6 +209,37 @@ func (c *ClientManagerUseCase) AddInstance(account, code string) (model.Client, 
 
 		}
 	}
+
+	// Main loop
+	go func() {
+
+		// Just fetch updates so the Updates channel won't cause the main routine to get blocked
+		rawUpdates := client.GetRawUpdatesChannel(1000)
+
+		for update := range rawUpdates {
+
+			fmt.Println(update)
+			m := update.Data
+			fmt.Println(m)
+			// if m["@type"] == "updateNewChat" {
+			// 	var update tdlib.UpdateNewChat
+			// 	err = json.Unmarshal(result.Raw, &update)
+			// 	return &update, err
+			// }
+			// if m["@type"] == "updateBasicGroup" ||
+			// 	m["@type"] == "updateSupergroup" {
+			// 	fmt.Println(m)
+
+			// }
+
+			// if m["@type"] == "updateBasicGroupFullInfo" ||
+			// 	m["@type"] == "updateSupergroupFullInfo" {
+			// 	fmt.Println(m["@type"])
+			// 	fmt.Println(m)
+			// }
+
+		}
+	}()
 
 	return repclient, ret
 }
@@ -230,8 +261,23 @@ func CreateBasicGroup(account string, f model.Friends) error {
 	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
 		time.Sleep(300 * time.Millisecond)
 	}
-	client.CreateNewBasicGroupChat(f.Cids, f.Uname)
+	// chat, err := client.CreateNewBasicGroupChat(f.Cids, f.Uname)
 
+	chat, err := client.CreateNewSupergroupChat(f.Uname, false, f.Uname, nil, false)
+
+	if err != nil {
+		return err
+	}
+	_, err = client.AddChatMembers(chat.ID, f.Cids)
+	if err != nil {
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(chat)
 	return nil
 }
 
@@ -304,10 +350,30 @@ func SendMessage(account, groupname, text string) error {
 	}
 
 	chat, err := client.SearchChatsOnServer(groupname, 1)
-	//chat, err := client.SearchChats(groupname, 1)
+
+	// tdlib.CallID
+	// sup, aer := client.GenerateChatInviteLink(chat.ChatIDs[0])
+
+	// sup, aer := client.SearchPublicChat(groupname)
+
+	// client.up
+	// link, _ := client.GenerateChatInviteLink(chat.ChatIDs[0])
+
+	// TdApi.SearchPublicChat
+	// 调用 TdApi.GetSupergroup
+	// 调用 TdApi.GetSupergroupFullInfo
+
+	// // sup, aer := client.GetBasicGroupFullInfo(int32(chat.ChatIDs[0]))
+
+	// chat, err := client.SearchChats(groupname, 1)
 	if err != nil {
 		return errors.New("找不到组！")
 	}
+	if chat.TotalCount == 0 {
+		log.Info("找不到组, ", groupname)
+		return errors.New("找不到组！")
+	}
+
 	inputMsgTxt := tdlib.NewInputMessageText(tdlib.NewFormattedText(text, nil), true, true)
 	_, err = client.SendMessage(chat.ChatIDs[0], int64(0), int64(0), nil, nil, inputMsgTxt)
 	if err != nil {
