@@ -5,8 +5,8 @@ package model
 // json is for couchdb
 
 type SaveGroup struct {
-	Phone string `json:"phone"`
-	Uid   int64  `json:"uid"`
+	Uid   int64 `json:"uid"`
+	Agent int   `json:"agent"`
 }
 
 type AddContacts struct {
