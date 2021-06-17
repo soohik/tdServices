@@ -5064,28 +5064,6 @@ func (client *Client) ReplacePermanentChatInviteLink(chatID int64) (*ChatInviteL
 
 }
 
-// GenerateChatInviteLink Generates a new invite link for a chat; the previously generated link is revoked. Available for basic groups, supergroups, and channels. Requires administrator privileges and can_invite_users right
-// @param chatID Chat identifier
-func (client *Client) GenerateChatInviteLink(chatID int64) (*ChatInviteLink, error) {
-	result, err := client.SendAndCatch(UpdateData{
-		"@type":   "generateChatInviteLink",
-		"chat_id": chatID,
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if result.Data["@type"].(string) == "error" {
-		return nil, fmt.Errorf("error! code: %d msg: %s", result.Data["code"], result.Data["message"])
-	}
-
-	var chatInviteLink ChatInviteLink
-	err = json.Unmarshal(result.Raw, &chatInviteLink)
-	return &chatInviteLink, err
-
-}
-
 // CheckChatInviteLink Checks the validity of an invite link for a chat and returns information about the corresponding chat
 // @param inviteLink Invite link to be checked; must begin with "https://t.me/joinchat/", "https://telegram.me/joinchat/", or "https://telegram.dog/joinchat/"
 func (client *Client) CheckChatInviteLink(inviteLink string) (*ChatInviteLinkInfo, error) {
