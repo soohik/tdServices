@@ -23,18 +23,14 @@ func register(c *gin.Context) {
 	}
 
 	//查找数据库
-	find, client := clientmanager.RegisterPhone(phone.Phone, phone.Code)
+	client, find := clientmanager.RegisterPhone(phone.Phone, phone.Code)
 
 	var msg model.Message
-	if find {
-		b, _ := json.Marshal(&client)
-		_ = json.Unmarshal(b, &msg.Data)
+	msg.Code = find
+	b, _ := json.Marshal(&client)
+	_ = json.Unmarshal(b, &msg.Data)
 
-		msg.Code = model.SOK
-
-	} else {
-		msg.Code = model.RegisterFailed
-	}
+	msg.Code = model.SOK
 
 	c.JSON(http.StatusOK, msg)
 }
@@ -98,6 +94,32 @@ func Getaddgroups(c *gin.Context) {
 	fmt.Println(agent)
 
 	groups, err := clientmanager.Getallgroups(agent.Name, 0)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	b, _ := json.Marshal(&groups)
+	err = json.Unmarshal(b, &msg.Data)
+	fmt.Println(err)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+func GetallChats(c *gin.Context) {
+	var msg model.Message
+	msg.Code = model.SOK
+
+	agent, err := phoneclient.JsonToAgent(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	groups, err := clientmanager.Getallchats(agent.Name, 0)
 
 	if err != nil {
 		msg.Code = model.BadRequest
@@ -272,7 +294,32 @@ func SavegroupContents(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	// err = clientmanager.GetmeContents(agent)
+	err = clientmanager.SaveGroupContents(agent.Phone, agent.Uid)
+
+	// if err != nil {
+	// 	msg.Code = model.BadRequest
+	// 	c.JSON(http.StatusOK, msg)
+	// 	return
+	// }
+
+	// b, _ := json.Marshal(&groups)
+	// _ = json.Unmarshal(b, &msg.Data)
+
+	c.JSON(http.StatusOK, msg)
+
+}
+
+//获取组联系人
+func Savechatcontacts(c *gin.Context) {
+	var msg model.Message
+
+	agent, err := phoneclient.JsonToChat(c)
+	if err != nil {
+		return
+	}
+	fmt.Println(agent)
+
+	err = clientmanager.Savechatcontacts(agent.Phone, agent.Cid)
 
 	// if err != nil {
 	// 	msg.Code = model.BadRequest

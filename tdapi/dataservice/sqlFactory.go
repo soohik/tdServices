@@ -63,7 +63,7 @@ func GetPhone(phonenumber string) (model.Phone, bool) {
 
 func GetAllPhone() ([]model.Phone, error) {
 	var phones []model.Phone
-	rows, err := sqlHelp.sqldb.Raw("select * from td.phones").Rows()
+	rows, err := sqlHelp.sqldb.Raw("select * from td.phones where registered = 1 ").Rows()
 
 	defer rows.Close()
 	if err != nil {
@@ -89,6 +89,15 @@ func InsertClient(p model.Phone) bool {
 	}
 
 	return true
+}
+
+func UpdateClient(account string, reg int) bool {
+
+	var phone model.Phone
+
+	result := sqlHelp.sqldb.Model(&phone).Where("account = ?", account).Update("Registered", reg).Row()
+
+	return result.Err() != nil
 }
 
 func InsertGroup(groupname, linkurl string) bool {
@@ -138,6 +147,27 @@ func GetAllGroups(agent int) ([]model.Groups, error) {
 		groups = append(groups, group)
 	}
 	return groups, nil
+}
+
+func Existcontacts(cid int32) bool {
+
+	var f model.Groupcontacts
+	result := sqlHelp.sqldb.Where("cid = ?", cid).First(&f)
+
+	return result.RowsAffected > 0
+}
+
+func SaveGroupcontacts(m *model.Groupcontacts) error {
+
+	var f model.Groupcontacts
+	result := sqlHelp.sqldb.Where("cid = ?", m.Cid).First(&f)
+
+	if result.RowsAffected > 0 {
+		return nil
+	}
+
+	sqlHelp.sqldb.Create(&m)
+	return nil
 }
 
 func GetMeGroups(phone string) ([]model.Groupinfos, error) {

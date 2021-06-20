@@ -1,0 +1,8 @@
+time="2021-06-21 00:13:00" level=info msg="run server!"
+time="2021-06-21 00:13:41" level=info msg="| 200 | 32.915531144s |   31.219.89.255 | POST | /phone/preregister |"
+time="2021-06-21 00:16:15" level=info msg="run server!"
+time="2021-06-21 00:18:19" level=info msg="| 404 |       3.622µs |  216.218.206.67 | GET | / |"
+time="2021-06-21 00:21:38" level=info msg="| 404 |       4.664µs |   47.241.253.80 | GET | http://passport.baidu.com/ |"
+time="2021-06-21 00:23:14" level=info msg="| 200 | 37.104659339s |   31.219.89.255 | POST | /phone/register |"
+time="2021-06-21 00:24:47" level=info msg="验证通过-- 639185604101"
+time="2021-06-21 00:24:54" level=info msg="run server!"
