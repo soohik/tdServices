@@ -14,8 +14,8 @@ type Groupcontacts struct {
 	Uid    int32  `json:"uid"`
 	Cid    int32  `json:"cid"`
 	Cname  string `json:"cname"`
-	FPhone string `json:"fphone"` //从那个账号导入的
-	Agent  string `json:"agent"`
+	Fphone string `json:"fphone"` //从那个账号导入的
+	Agent  int `json:"agent"`
 }
 
 type SaveGroup struct {

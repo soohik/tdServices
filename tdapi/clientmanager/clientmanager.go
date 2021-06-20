@@ -2,6 +2,7 @@
 package clientmanager
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -202,7 +203,7 @@ func (c *ClientManagerUseCase) AddInstance(account string) {
 			log.Infof("Error getting current state: %s %v", account, err)
 			break
 		}
-		fmt.Println(currentState)
+
 		if currentState.GetAuthorizationStateEnum() == tdlib.AuthorizationStateWaitPhoneNumberType {
 			client.Close()
 			break
@@ -218,6 +219,57 @@ func (c *ClientManagerUseCase) AddInstance(account string) {
 
 		}
 	}
+	go func() {
+		rawUpdates := client.GetRawUpdatesChannel(100)
+		me, _ := client.GetMe()
+
+		for update := range rawUpdates {
+			// Show all updates
+
+			t, ok := update.Data["@type"]
+			if !ok {
+				continue
+			}
+
+			msgType, ok := t.(string)
+			if !ok {
+				continue
+			}
+			if msgType == "updateUser" {
+
+				switch tdlib.UpdateEnum(update.Data["@type"].(string)) {
+
+				case tdlib.UpdateUserType:
+
+					var up tdlib.UpdateUser
+					json.Unmarshal(update.Raw, &up)
+					if up.User.PhoneNumber != me.PhoneNumber {
+						insertUserIfNotExists(me.PhoneNumber, up.User)
+					}
+
+				}
+
+				continue
+			}
+			if msgType == "updateUserStatus" {
+				fmt.Println(update.Data["@type"])
+				switch tdlib.UpdateEnum(update.Data["@type"].(string)) {
+				case tdlib.UpdateUserStatusType:
+
+					var up tdlib.UpdateUserStatus
+					json.Unmarshal(update.Raw, &up)
+					if up.UserID != me.ID {
+						user, _ := client.GetUser(up.UserID)
+						insertUserIfNotExists(me.PhoneNumber, user)
+					}
+
+				}
+				continue
+			}
+
+		}
+
+	}()
 
 }
 
@@ -627,19 +679,19 @@ func addMembers(client *tdlib.Client, m *tdlib.ChatMembers) error {
 		return errors.New("no members")
 	}
 	fmt.Println("total count:", m.TotalCount, ", got member count:", len(m.Members))
-	for _, member := range m.Members {
-		user, err := client.GetUser(member.UserID)
-		if err != nil {
+	// for _, member := range m.Members {
+	// 	user, err := client.GetUser(member.UserID)
+	// 	if err != nil {
 
-			continue
-		}
-		if userExists(member.UserID) {
-			continue
-		}
-		if err := insertUser(member.UserID, user.Username); err != nil {
-			// log.Println("insert user failed", err)
-		}
-	}
+	// 		continue
+	// 	}
+	// 	if userExists(member.UserID) {
+	// 		continue
+	// 	}
+	// 	// if err := insertUser(member.UserID, user.Username,); err != nil {
+	// 	// 	// log.Println("insert user failed", err)
+	// 	// }
+	// }
 	return nil
 }
 
@@ -647,8 +699,8 @@ func userExists(userID int32) bool {
 	return dataservice.Existcontacts(userID)
 }
 
-func insertUser(userID int32, userName string) error {
-	u := &model.Groupcontacts{Uid: userID, Cname: userName}
+func insertUser(userID int32, userName, phone string) error {
+	u := &model.Groupcontacts{Cid: userID, Cname: userName}
 	return dataservice.SaveGroupcontacts(u)
 
 }
@@ -771,4 +823,30 @@ func RegisterClient(account, code string, client *tdlib.Client) (model.Client, i
 func (c *ClientManagerUseCase) AddClient(account string, client *tdlib.Client) {
 	dataservice.UpdateClient(account, REG_OK)
 	c.TdInstances[account] = client
+}
+
+func insertUserIfNotExists(from string, user *tdlib.User) error {
+
+	if userExists(user.ID) {
+		return errors.New("User exists")
+	}
+
+	if err := insertUser(user.ID, user.FirstName, from); err != nil {
+		// log.Println("insert user failed", err)
+		return err
+	}
+	return nil
+}
+
+func insertUserIfNotExistsUserID(from string, user *tdlib.User) error {
+
+	if userExists(user.ID) {
+		return errors.New("User exists")
+	}
+
+	if err := insertUser(user.ID, user.FirstName, from); err != nil {
+		// log.Println("insert user failed", err)
+		return err
+	}
+	return nil
 }
