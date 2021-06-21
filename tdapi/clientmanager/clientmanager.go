@@ -152,6 +152,27 @@ func BuildClientManager() {
 }
 
 //创建群，邀请别人加入群
+func InvatedFriends(account string, groupname string, chatid int64, cids []int32) error {
+
+	client := ClientManager.TdInstances[account]
+
+	currentState, _ := client.Authorize()
+	if currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType {
+		return errors.New("没有认证")
+	}
+
+	if chatid != 0 {
+		_, err := client.AddChatMembers(chatid, cids)
+		if err != nil {
+			return errors.New("加入失败")
+		}
+
+	}
+
+	return nil
+}
+
+//创建群，邀请别人加入群
 func Joinlink(account, linkurl, groupname string) (int, error) {
 
 	client := ClientManager.TdInstances[account]

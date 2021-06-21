@@ -82,6 +82,35 @@ func CreateGroup(c *gin.Context) {
 	c.JSON(http.StatusOK, msg)
 }
 
+//邀请朋友进群
+func InviteFriends(c *gin.Context) {
+	var msg model.Message
+
+	phone, err := phoneclient.JsonToInvated(c)
+	if err != nil {
+		return
+	}
+
+	strArr := strings.Split(phone.Uname, TDURL)
+	if len(strArr) <= 0 {
+		msg.Code = model.BadRequest
+		msg.Err = "不是有效的url"
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	err = clientmanager.InvatedFriends(phone.Phone, strArr[0], phone.Chatid, phone.Cids)
+
+	if err != nil {
+		msg.Code = model.BadRequest
+		msg.Err = err.Error()
+	} else {
+		msg.Code = model.SOK
+
+	}
+	c.JSON(http.StatusOK, msg)
+}
+
 func JoinChatByInviteLink(c *gin.Context) {
 	var msg model.Message
 
