@@ -446,13 +446,15 @@ func CreateBasicGroup(account string, f model.Friends) (*model.Groupinfos, error
 	}
 
 	var m model.Groupinfos
+
 	m.Chatid = chat.ID
+	// m.Chatid = strconv.FormatInt(chat.ID, 10)
 	m.Linkurl = fmt.Sprintf("%s%s", TDURL, f.Uname)
 	m.Groupname = f.Title
 	m.Phone = account
 	m.Uid = chattype.SupergroupID
 
-	_, err = client.SetSupergroupUsername(m.Uid, m.Linkurl)
+	_, err = client.SetSupergroupUsername(m.Uid, f.Uname)
 
 	if err != nil {
 		dataservice.InsertGroupsInfo(m)

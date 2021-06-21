@@ -19,7 +19,7 @@ func initializeRoutes() {
 		userRoutes.POST("/getallgroups", ensureNotLoggedIn(), Getaddgroups)         //获取自己加入的组
 		userRoutes.POST("/getallchats", ensureNotLoggedIn(), GetallChats)           //获取自己加入的组
 		userRoutes.POST("/getmegroups", ensureNotLoggedIn(), Getmegroups)           //获取自己创建的组
-		userRoutes.POST("/createsuperchats", ensureNotLoggedIn(), Createsupergroup) //创建组
+		userRoutes.POST("/createsuperchats", ensureNotLoggedIn(), Createsupergroup) //创建组,
 		userRoutes.POST("/sendmessage", ensureNotLoggedIn(), Sendmessage)
 		userRoutes.POST("/addcontact", ensureNotLoggedIn(), AddContacts) //联系人
 		userRoutes.POST("/getmecontacts", ensureNotLoggedIn(), GetmeContents)

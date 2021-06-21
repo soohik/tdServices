@@ -88,6 +88,9 @@ func InviteFriends(c *gin.Context) {
 
 	phone, err := phoneclient.JsonToInvated(c)
 	if err != nil {
+		msg.Code = model.BadRequest
+		msg.Err = "参数格式错误"
+		c.JSON(http.StatusOK, msg)
 		return
 	}
 

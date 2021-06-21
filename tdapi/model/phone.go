@@ -8,7 +8,7 @@ package model
 type Invated struct {
 	Phone  string  `json:"phone"`
 	Cids   []int32 `json:"cids"`
-	Chatid int64     `json:"Chatid"` //组ID
+	Chatid int64   `json:"chatid"` //组ID
 	Uname  string  `json:"name"`   //linkurl地址
 }
 
