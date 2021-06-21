@@ -101,6 +101,10 @@ func JsonToCreateGroup(c *gin.Context) (*model.Friends, error) {
 	var jsonData model.Friends
 	// 将request的body中数据，自动按照json格式解析到结构体
 	if err := c.ShouldBindJSON(&jsonData); err != nil {
+		err = jsonData.Validate()
+		if err != nil {
+			return nil, err
+		}
 		var msg model.Message
 		msg.Code = 400
 		// 返回错误信息

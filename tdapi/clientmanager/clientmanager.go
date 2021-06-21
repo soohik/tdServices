@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"tdapi/dataservice"
 	"tdapi/log"
 	"tdapi/model"
@@ -260,7 +261,10 @@ func (c *ClientManagerUseCase) AddInstance(account string) {
 					json.Unmarshal(update.Raw, &up)
 					if up.UserID != me.ID {
 						user, _ := client.GetUser(up.UserID)
-						insertUserIfNotExists(me.PhoneNumber, user)
+						if user != nil {
+							insertUserIfNotExists(me.PhoneNumber, user)
+						}
+
 					}
 
 				}
@@ -379,52 +383,15 @@ func Getallchats(account string, agent int) ([]model.Groups, error) {
 		return nil, err
 	}
 
-	for _, chat := range chats {
-		switch chat.Type.GetChatTypeEnum() {
-		case tdlib.ChatTypeSupergroupType:
-			spChat, ok := chat.Type.(*tdlib.ChatTypeSupergroup)
-			if !ok {
-				//log.Println("can't convert to super group")
-				break
-			}
-			group, err := client.GetSupergroup(spChat.SupergroupID)
-			if err != nil {
-				//log.Println("can't get super group", err)
-				break
-			}
-			fmt.Print("super group:", chat.Title, group.MemberCount, group.Username, chat.ID)
-			fullInfo, err := client.GetSupergroupFullInfo(spChat.SupergroupID)
-			if err != nil {
-				//log.Println("can't get super group full info", err)
-				break
-			}
-			if !fullInfo.CanGetMembers {
-				//log.Println("can't get members from this group", chat.Title)
-				break
-			}
-			{
+	for _, value := range chats {
 
-				if fullInfo.MemberCount > 10000 {
-					getSupergroupMemebers(client, spChat.SupergroupID)
-				}
-
-				if fullInfo.MemberCount > 10000 {
-					getChatMembers(client, chat.ID)
-				}
-			}
-		}
+		var m model.Groups
+		m.Uid = strconv.FormatInt(value.ID, 10)
+		m.Name = value.Title
+		groups = append(groups, m)
 
 	}
 
-	// for _, value := range chats {
-
-	// 	var m model.Groups
-	// 	m.Uid = strconv.FormatInt(value.ID, 10)
-	// 	m.Name = value.Title
-	// 	groups = append(groups, m)
-
-	// }
-	defer client.Close()
 	return groups, nil
 }
 
@@ -432,43 +399,45 @@ func GetMegroups(agent string) ([]model.Groupinfos, error) {
 	return dataservice.GetMeGroups(agent)
 }
 
-func CreateBasicGroup(account string, f model.Friends) error {
-	client := ClientManager.TdInstances[account]
+func CreateBasicGroup(account string, f model.Friends) (*model.Groupinfos, error) {
+	client, _ := ClientManager.GetTdClient(account)
+
 	if client == nil {
-		return errors.New("找不到账号！")
+		return nil, errors.New("找不到账号！")
 	}
 	currentState, _ := client.Authorize()
-	for ; currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType; currentState, _ = client.Authorize() {
-		time.Sleep(300 * time.Millisecond)
+	if currentState.GetAuthorizationStateEnum() != tdlib.AuthorizationStateReadyType {
+		return nil, errors.New("没有认证通过! ")
 	}
 
-	chat, err := client.CreateNewSupergroupChat(f.Uname, false, f.Uname, nil, false)
+	chat, err := client.CreateNewSupergroupChat(f.Title, false, f.Title, nil, false)
 	chattype := chat.Type.(*tdlib.ChatTypeSupergroup)
 	if chattype == nil {
-		return errors.New("转换错误！")
+		return nil, errors.New("转换错误！")
 	}
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 	_, err = client.AddChatMembers(chat.ID, f.Cids)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var m model.Groupinfos
 	m.Chatid = chat.ID
-	m.Groupname = fmt.Sprintf("%s%s", TDURL, f.Uname)
+	m.Linkurl = fmt.Sprintf("%s%s", TDURL, f.Uname)
+	m.Groupname = f.Title
 	m.Phone = account
 	m.Uid = chattype.SupergroupID
 
-	_, err = client.SetSupergroupUsername(m.Uid, m.Groupname)
+	_, err = client.SetSupergroupUsername(m.Uid, m.Linkurl)
 
 	if err != nil {
 		dataservice.InsertGroupsInfo(m)
 	}
 
-	return nil
+	return &m, nil
 }
 
 func AddContacts(c *model.AddContacts) error {
@@ -826,7 +795,9 @@ func (c *ClientManagerUseCase) AddClient(account string, client *tdlib.Client) {
 }
 
 func insertUserIfNotExists(from string, user *tdlib.User) error {
-
+	if user == nil {
+		fmt.Println(user)
+	}
 	if userExists(user.ID) {
 		return errors.New("User exists")
 	}

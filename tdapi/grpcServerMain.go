@@ -20,7 +20,7 @@ const (
 func catchPanic() {
 	if p := recover(); p != nil {
 
-	}
+	} 
 }
 
 func runServer() error {

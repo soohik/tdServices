@@ -8,6 +8,7 @@ require (
 	github.com/go-kivik/couchdb v2.0.0+incompatible // indirect
 	github.com/go-kivik/kivik v2.0.0+incompatible // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible // indirect
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jakecoffman/cron v0.0.0-20190106200828-7e2009c226a5 // indirect

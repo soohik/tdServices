@@ -57,6 +57,31 @@ func preregister(c *gin.Context) {
 
 }
 
+func CreateGroup(c *gin.Context) {
+	var msg model.Message
+
+	phone, err := phoneclient.JsonToLink(c)
+	if err != nil {
+		return
+	}
+
+	strArr := strings.Split(phone.Url, TDURL)
+	if len(strArr) <= 0 {
+		msg.Code = model.BadRequest
+		msg.Err = "不是有效的url"
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	ret, _ := clientmanager.Joinlink(phone.Phone, phone.Url, strArr[1])
+
+	if ret == model.SOK {
+		msg.Code = model.SOK
+
+	}
+	c.JSON(http.StatusOK, msg)
+}
+
 func JoinChatByInviteLink(c *gin.Context) {
 	var msg model.Message
 
@@ -93,7 +118,7 @@ func Getaddgroups(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	groups, err := clientmanager.Getallgroups(agent.Name, 0)
+	groups, err := clientmanager.Getallgroups(agent.Phone, 0)
 
 	if err != nil {
 		msg.Code = model.BadRequest
@@ -119,7 +144,7 @@ func GetallChats(c *gin.Context) {
 	}
 	fmt.Println(agent)
 
-	groups, err := clientmanager.Getallchats(agent.Name, 0)
+	groups, err := clientmanager.Getallchats(agent.Phone, 0)
 
 	if err != nil {
 		msg.Code = model.BadRequest
@@ -160,25 +185,26 @@ func Getmegroups(c *gin.Context) {
 }
 
 //邀请
-func Invategroup(c *gin.Context) {
+func Createsupergroup(c *gin.Context) {
 	var msg model.Message
-
+	msg.Code = 200
 	agent, err := phoneclient.JsonToCreateGroup(c)
 	if err != nil {
 		return
 	}
 	fmt.Println(agent)
 
-	err = clientmanager.CreateBasicGroup(agent.Account, *agent)
+	m, err := clientmanager.CreateBasicGroup(agent.Phone, *agent)
 
 	if err != nil {
 		msg.Code = model.BadRequest
+		msg.Err = err.Error()
 		c.JSON(http.StatusOK, msg)
 		return
 	}
 
-	// b, _ := json.Marshal(&groups)
-	// _ = json.Unmarshal(b, &msg.Data)
+	b, _ := json.Marshal(&m)
+	_ = json.Unmarshal(b, &msg.Data)
 
 	c.JSON(http.StatusOK, msg)
 
