@@ -368,6 +368,11 @@ func SavegroupContents(c *gin.Context) {
 }
 
 //获取组联系人
+func Searchagentallcontacts(c *gin.Context) {
+
+}
+
+//获取组联系人
 func Savechatcontacts(c *gin.Context) {
 	var msg model.Message
 

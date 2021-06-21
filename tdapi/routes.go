@@ -25,6 +25,7 @@ func initializeRoutes() {
 		userRoutes.POST("/getmecontacts", ensureNotLoggedIn(), GetmeContents)
 		userRoutes.POST("/savegroupcontact", ensureNotLoggedIn(), SavegroupContents)
 		userRoutes.POST("/savechatcontacts", ensureNotLoggedIn(), Savechatcontacts) //保存聊天记录人
+		userRoutes.POST("/getagentallcontacts", ensureNotLoggedIn(), Searchagentallcontacts) //获取当前登录账号所有的联系人
 		userRoutes.POST("/addtask", ensureNotLoggedIn(), Addtask)
 
 	}
